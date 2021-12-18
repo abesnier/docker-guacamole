@@ -1,4 +1,4 @@
-**:construction: This is a fork of oznu/docker-guacamole, and is an attempt to update it to tomcat10, postgresql 13, guacamole 1.3.0, and s6_overlay 2.2.**
+**:construction: This is a fork of oznu/docker-guacamole, and is an attempt to update it to tomcat9 (guacamole is not compatible with tomcat10), postgresql 13, guacamole 1.3.0, and s6_overlay 2.2.**
 
 # Docker Guacamole
 
