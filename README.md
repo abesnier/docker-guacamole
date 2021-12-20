@@ -1,4 +1,11 @@
-**:construction: This is a fork of oznu/docker-guacamole, and is an attempt to update it to tomcat9 (guacamole is not compatible with tomcat10), postgresql 13, guacamole 1.3.0, and s6_overlay 2.2.**
+**:construction: This is a fork of oznu/docker-guacamole, updated to tomcat9 (guacamole is not compatible with tomcat10), postgresql 13, guacamole 1.3.0, and s6_overlay 2.2.**
+
+**There is a bug when updating from oznu's container (running guacamole 1.2.0 and postgresql 9) to this one. If something does not work, delete the /config folder and relaunch the container. Be careful, by doing so, you will lose your previous setup. I am trying to find a solution still.** 
+
+# Available tags
+`latest` based on tomcat:9.0.56-jre11
+
+`slim` based on tomcat:9.0.56-jre11-openjdk-slim-bullseye
 
 # Docker Guacamole
 
