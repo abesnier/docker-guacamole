@@ -71,7 +71,7 @@ RUN curl -SLO "https://dlcdn.apache.org/guacamole/${GUAC_VER}/source/guacamole-s
 RUN set -x \
   && rm -rf ${CATALINA_HOME}/webapps/ROOT \
   && curl -SLo ${CATALINA_HOME}/webapps/ROOT.war "https://dlcdn.apache.org/guacamole/${GUAC_VER}/binary/guacamole-${GUAC_VER}.war" \
-  && curl -SLo ${GUACAMOLE_HOME}/lib/postgresql-${POSTGREJDBC_REV}.jar "https://jdbc.postgresql.org/download/postgresql-${POSTGREJDBC_VER}.jar" \                
+  && curl -SLo ${GUACAMOLE_HOME}/lib/postgresql-${POSTGREJDBC_VER}.jar "https://jdbc.postgresql.org/download/postgresql-${POSTGREJDBC_VER}.jar" \                
   && curl -SLO "https://dlcdn.apache.org/guacamole/${GUAC_VER}/binary/guacamole-auth-jdbc-${GUAC_VER}.tar.gz" \
   && tar -xzf guacamole-auth-jdbc-${GUAC_VER}.tar.gz \
   && cp -R guacamole-auth-jdbc-${GUAC_VER}/postgresql/guacamole-auth-jdbc-postgresql-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions/ \
