@@ -7,9 +7,9 @@ ENV CATALINA_HOME=/opt/tomcat \
     POSTGRES_DB=guacamole_db \
     POSTGREJDBC_VER=42.5.4 \
     S6OVERLAY_VER=3.1.3.0 \
-    GUAC_DOWN_PATH=https://dist.apache.org/repos/dist/dev/guacamole \
+    GUAC_DOWN_PATH=https://dist.apache.org/repos/dist/release/guacamole \
     GUAC_VER=1.5.0 \
-    GUAC_VER_PATH=1.5.0-RC1 \
+    GUAC_VER_PATH=1.5.0 \
     PG_MAJOR=14 \
     TOMCAT_VER=9.0.71
 

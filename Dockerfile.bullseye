@@ -12,9 +12,9 @@ ENV GUACAMOLE_HOME=/app/guacamole \
   POSTGRES_DB=guacamole_db \
   S6OVERLAY_VER=3.1.3.0 \
   POSTGREJDBC_VER=42.5.4 \
-  GUAC_DOWN_PATH=https://dist.apache.org/repos/dist/dev/guacamole \
+  GUAC_DOWN_PATH=https://dist.apache.org/repos/dist/release/guacamole \
   GUAC_VER=1.5.0 \
-  GUAC_VER_PATH=1.5.0-RC1 \
+  GUAC_VER_PATH=1.5.0 \
   PG_MAJOR=13
 
 RUN apt-get update && apt-get upgrade -y && \
