@@ -13,7 +13,9 @@ Ubuntu | guacamole:1.4.0 <br> guacamole:latest | guacamole:1.4.0-pg14 <br> guaca
 Alpine | N/A | guacamole:alpine
 
 # What's new / Changelog
-**20232-02-16** - Updated to PostgreSQL JDBC 42.5.4.
+**2023-03-06** - Updated to Tomcat 9.0.73
+
+**2023-02-16** - Updated to PostgreSQL JDBC 42.5.4.
 
 **2023-02-15** - Well, of course, PostgreSQL JDBC 42.5.3 comes back online juste two days after I regressed the images... Soooo, here they are back, updated with 42.5.3.
 

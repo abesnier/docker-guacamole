@@ -4,7 +4,7 @@
 #
 # 2022-12-19 - Changelog maintained in README.md
 
-FROM library/tomcat:9.0.72-jre11
+FROM library/tomcat:9.0.73-jre11
 
 ENV GUACAMOLE_HOME=/app/guacamole \
   PGDATA=/config/postgres \
