@@ -11,7 +11,7 @@ ENV GUACAMOLE_HOME=/app/guacamole \
   POSTGRES_USER=guacamole \
   POSTGRES_DB=guacamole_db \
   S6OVERLAY_VER=3.1.4.1 \
-  POSTGREJDBC_VER=42.5.4 \
+  POSTGREJDBC_VER=42.6.0 \
   GUAC_VER=1.4.0 \
   PG_MAJOR=13
 
@@ -140,6 +140,7 @@ COPY ./guacamole-branding-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions-available
 ENV PATH=/usr/lib/postgresql/${PG_MAJOR}/bin:$PATH
 ENV GUACAMOLE_HOME=/config/guacamole
 ENV GUACD_LOG_LEVEL=info
+ENV S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0
 
 COPY root /
 
