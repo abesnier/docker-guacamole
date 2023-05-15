@@ -1,3 +1,5 @@
+***Currently moving! I will resume the weekly builds (and updates) when Internet is connected at my new place (hpefully next week).***
+
 **Guacamole 1.5.1 has been released. The [master branch](https://github.com/abesnier/docker-guacamole/tree/master) will now be used for Guacamole 1.5.1, and the [branch 1.4.0](https://github.com/abesnier/docker-guacamole/tree/1.4.0) will still be maintained for Guacamole 1.4.0 for a few months, but will gradually be retired.**
 
 **If you decide to try the new images, make sure to delete the previous extensions. Go to the `config/guacamole/extensions` directory, and delete the files that contain 1.4.0 in their names (**`rm *1.4.0*.jar`**). Having multiple versions of the same extension will create issues. You can similarly clean the `extensions-available`.**
