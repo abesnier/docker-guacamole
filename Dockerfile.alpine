@@ -6,10 +6,10 @@ ENV CATALINA_HOME=/opt/tomcat \
     POSTGRES_USER=guacamole \
     POSTGRES_DB=guacamole_db \
     POSTGREJDBC_VER=42.6.0 \
-    S6OVERLAY_VER=3.1.4.2 \
+    S6OVERLAY_VER=3.1.5.0 \
     GUAC_VER=1.4.0 \
     PG_MAJOR=14 \
-    TOMCAT_VER=9.0.73
+    TOMCAT_VER=9.0.75
 
 RUN set -xe && \
     apk update && \
