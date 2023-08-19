@@ -9,7 +9,7 @@ ENV CATALINA_HOME=/opt/tomcat \
     S6OVERLAY_VER=3.1.5.0 \
     GUAC_VER=1.4.0 \
     PG_MAJOR=14 \
-    TOMCAT_VER=9.0.75
+    TOMCAT_VER=9.0.78
 
 RUN set -xe && \
     apk update && \
