@@ -5,13 +5,14 @@ ENV CATALINA_HOME=/opt/tomcat \
     PGDATA=/config/postgres \
     POSTGRES_USER=guacamole \
     POSTGRES_DB=guacamole_db \
+    POSTGRES_PASSWORD=toystack \
     POSTGREJDBC_VER=42.7.4 \
     S6OVERLAY_VER=3.2.0.2 \
     GUAC_DOWN_PATH=https://dlcdn.apache.org/guacamole \
     GUAC_VER=1.5.5 \
     GUAC_VER_PATH=1.5.5 \
     PG_MAJOR=15 \
-    TOMCAT_VER=9.0.96
+    TOMCAT_VER=9.0.97
 
 RUN set -xe && \
     apk update && \
@@ -83,11 +84,11 @@ RUN set -xe && \
     make install && \
     ldconfig -v /usr/local/lib &&\
     rm -rf ${CATALINA_HOME}/webapps/ROOT &&\
-    curl -SLo ${CATALINA_HOME}/webapps/ROOT.war "${GUAC_DOWN_PATH}/${GUAC_VER_PATH}/binary/guacamole-${GUAC_VER}.war" && \
+    curl -L -o ${CATALINA_HOME}/webapps/ROOT.war https://github.com/shtoystack/toystack-os-client/releases/download/v0.0.1/guacamole-1.5.5.war && \
     curl -SLo ${GUACAMOLE_HOME}/lib/postgresql-${POSTGREJDBC_VER}.jar "https://jdbc.postgresql.org/download/postgresql-${POSTGREJDBC_VER}.jar" &&\
-    curl -SLO "${GUAC_DOWN_PATH}/${GUAC_VER_PATH}/binary/guacamole-auth-jdbc-${GUAC_VER}.tar.gz" &&\
-    tar -xzf guacamole-auth-jdbc-${GUAC_VER}.tar.gz &&\
-    cp -R guacamole-auth-jdbc-${GUAC_VER}/postgresql/guacamole-auth-jdbc-postgresql-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions/ &&\
+    curl -L -o guacamole-auth-jdbc-1.5.5.tar.gz https://github.com/shtoystack/toystack-os-client/releases/download/v0.0.1/guacamole-auth-jdbc.tar.gz && \
+    tar -xzf guacamole-auth-jdbc-1.5.5.tar.gz &&\
+    cp -R guacamole-auth-jdbc-1.5.5/postgresql/guacamole-auth-jdbc-postgresql-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions/ &&\
     cp -R guacamole-auth-jdbc-${GUAC_VER}/postgresql/schema ${GUACAMOLE_HOME}/ &&\
     rm -rf guacamole-auth-jdbc-${GUAC_VER} guacamole-auth-jdbc-${GUAC_VER}.tar.gz &&\
     for i in auth-duo auth-quickconnect auth-header auth-ldap auth-json auth-totp history-recording-storage; do \
@@ -123,6 +124,7 @@ ENV PATH=/usr/lib/postgresql/${PG_MAJOR}/bin:$PATH \
 WORKDIR /config
 
 EXPOSE 8080
+EXPOSE 5432
 
 ENTRYPOINT [ "/init" ]
 

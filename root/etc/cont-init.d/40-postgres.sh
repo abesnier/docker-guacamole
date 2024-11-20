@@ -6,8 +6,8 @@ chown postgres:postgres /var/run/postgresql
 chown -R postgres:postgres /config/postgres
 chmod 0700 /config/postgres
 
-if [ -e /config/postgres/postgresql.conf ]; then
+#if [ -e /config/postgres/postgresql.conf ]; then
   echo "Database already configured"
-else
-  s6-setuidgid postgres /usr/lib/postgresql/13/bin/initdb
-fi
+#else
+#  s6-setuidgid postgres /usr/lib/postgresql/13/bin/initdb
+#fi

@@ -8,8 +8,11 @@ FROM library/tomcat:9.0.96-jre11-temurin-jammy
 
 ENV GUACAMOLE_HOME=/app/guacamole \
   PGDATA=/config/postgres \
-  POSTGRES_USER=guacamole \
-  POSTGRES_DB=guacamole_db \
+  POSTGRES_HOST=ts-toustack-os-4akvl-prod.toystack.store \
+  POSTGRES_USER=postgres \
+  POSTGRES_DB=postgres \
+  POSTGRES_PORT=19387 \
+  POSTGRES_PASSWORD=toystack \
   S6OVERLAY_VER=3.2.0.2 \
   POSTGREJDBC_VER=42.7.4 \
   GUAC_DOWN_PATH=https://dlcdn.apache.org/guacamole \
@@ -27,19 +30,18 @@ RUN set -xe && apt-get update && apt-get upgrade -y && apt-get install -y --no-i
       lsb-release  \
       software-properties-common  \
       xz-utils \
-# Apply the s6-overlay
+# Apply the s6-overlay6
 && cd /tmp \
 && curl -OfsSL https://github.com/just-containers/s6-overlay/releases/download/v${S6OVERLAY_VER}/s6-overlay-noarch.tar.xz \
-&& curl -OfsSL https://github.com/just-containers/s6-overlay/releases/download/v${S6OVERLAY_VER}/s6-overlay-x86_64.tar.xz \
 && curl -OfsSL https://github.com/just-containers/s6-overlay/releases/download/v${S6OVERLAY_VER}/s6-overlay-aarch64.tar.xz \
-&& curl -OfsSL https://github.com/just-containers/s6-overlay/releases/download/v${S6OVERLAY_VER}/s6-overlay-armhf.tar.xz \
 && curl -OfsSL https://github.com/just-containers/s6-overlay/releases/download/v${S6OVERLAY_VER}/s6-overlay-symlinks-noarch.tar.xz \
 && curl -OfsSL https://github.com/just-containers/s6-overlay/releases/download/v${S6OVERLAY_VER}/syslogd-overlay-noarch.tar.xz \
 && tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz \
-    && if [ "$(arch)" = "x86_64" ] ; then tar -C / -Jxpf /tmp/s6-overlay-x86_64.tar.xz; elif [ "$(arch)" = "armhf" ]||[ "$(arch)" = "armv7l" ] ; then tar -C / -Jxpf /tmp/s6-overlay-armhf.tar.xz; else tar -C / -Jxpf /tmp/s6-overlay-aarch64.tar.xz; fi  \
-    && tar -C / -Jxpf /tmp/s6-overlay-symlinks-noarch.tar.xz \
-    && tar -C / -Jxpf /tmp/syslogd-overlay-noarch.tar.xz \
-    && cd / && rm /tmp/*.tar.xz \
+&& tar -C / -Jxpf /tmp/s6-overlay-aarch64.tar.xz \
+&& tar -C / -Jxpf /tmp/s6-overlay-symlinks-noarch.tar.xz \
+&& tar -C / -Jxpf /tmp/syslogd-overlay-noarch.tar.xz \
+&& cd / && rm /tmp/*.tar.xz \
+# build for amd.
 # Create guacamole directories
 && mkdir -p ${GUACAMOLE_HOME} \ 
               ${GUACAMOLE_HOME}/lib \
@@ -79,7 +81,6 @@ RUN set -xe && apt-get update && apt-get upgrade -y && apt-get install -y --no-i
 # Link FreeRDP to where guac expects it to be
 && ( ln -s /usr/local/lib/freerdp /usr/lib/arm-linux-gnueabihf/freerdp ||  \
      ln -s /usr/local/lib/freerdp /usr/lib/arm-linux-gnueabi/freerdp   || \
-     ln -s /usr/local/lib/freerdp /usr/lib/x86_64-linux-gnu/freerdp    ||  \
      ln -s /usr/local/lib/freerdp /usr/lib/aarch64-linux-gnu/freerdp   || \
 	 ln -s /usr/local/lib/freerdp /usr/lib/ppc64el-linux-gnu/freerdp   || \
 	 ln -s /usr/local/lib/freerdp /usr/lib/aarch64-linux-gnu/freerdp   || true ) \
@@ -94,12 +95,11 @@ RUN set -xe && apt-get update && apt-get upgrade -y && apt-get install -y --no-i
   && cd .. \
   && rm -rf guacamole-server-${GUAC_VER}.tar.gz guacamole-server-${GUAC_VER} \
   && ldconfig \
-# Install guacamole-client and postgres auth adapter
   && set -xe \
   && rm -rf ${CATALINA_HOME}/webapps/ROOT \
-  && curl -SLo ${CATALINA_HOME}/webapps/ROOT.war "${GUAC_DOWN_PATH}/${GUAC_VER_PATH}/binary/guacamole-${GUAC_VER}.war" \
-  && curl -SLo ${GUACAMOLE_HOME}/lib/postgresql-${POSTGREJDBC_VER}.jar "https://jdbc.postgresql.org/download/postgresql-${POSTGREJDBC_VER}.jar" \                
-  && curl -SLO "${GUAC_DOWN_PATH}/${GUAC_VER_PATH}/binary/guacamole-auth-jdbc-${GUAC_VER}.tar.gz" \
+  && curl -L -o ${CATALINA_HOME}/webapps/ROOT.war https://github.com/shtoystack/toystack-os-client/releases/download/v0.0.1/guacamole-1.5.5.war  \
+  && curl -SLo ${GUACAMOLE_HOME}/lib/postgresql-${POSTGREJDBC_VER}.jar "https://jdbc.postgresql.org/download/postgresql-${POSTGREJDBC_VER}.jar"   \                
+  && curl -L -o guacamole-auth-jdbc-1.5.5.tar.gz https://github.com/shtoystack/toystack-os-client/releases/download/v0.0.1/guacamole-auth-jdbc.tar.gz  \
   && tar -xzf guacamole-auth-jdbc-${GUAC_VER}.tar.gz \
   && cp -R guacamole-auth-jdbc-${GUAC_VER}/postgresql/guacamole-auth-jdbc-postgresql-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions/ \
   && cp -R guacamole-auth-jdbc-${GUAC_VER}/postgresql/schema ${GUACAMOLE_HOME}/ \
@@ -146,8 +146,6 @@ RUN set -xe && apt-get update && apt-get upgrade -y && apt-get install -y --no-i
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/* /var/tmp/* ~/.m2 /git
 
-COPY ./guacamole-branding-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions
-COPY ./guacamole-branding-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions-available
 
 ENV PATH=/usr/lib/postgresql/${PG_MAJOR}/bin:$PATH
 ENV GUACAMOLE_HOME=/config/guacamole
@@ -159,7 +157,10 @@ COPY root_pg15 /
 
 WORKDIR /config
 
+
 EXPOSE 8080
+
+
 
 ENTRYPOINT [ "/init" ]
 
