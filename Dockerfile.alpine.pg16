@@ -11,7 +11,7 @@ ENV CATALINA_HOME=/opt/tomcat \
     GUAC_VER=1.5.5 \
     GUAC_VER_PATH=1.5.5 \
     PG_MAJOR=16 \
-    TOMCAT_VER=9.0.96
+    TOMCAT_VER=9.0.98
 
 RUN set -xe && \
     apk update && \
