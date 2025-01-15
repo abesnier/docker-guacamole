@@ -6,7 +6,7 @@ for e in $(ls -1 ${GUACAMOLE_HOME}/extensions | grep -v ${GUAC_VER}); do
 done
 
 echo "Cleaning Extensions"
-for i in auth-duo auth-header auth-json auth-ldap auth-quickconnect auth-sso-cas auth-sso-openid auth-sso-saml auth-sso-ssl auth-totp branding display-statistics history-recording-storage vault-ksm; do
+for i in auth-duo auth-header auth-json auth-restrict auth-ldap auth-quickconnect auth-sso-cas auth-sso-openid auth-sso-saml auth-sso-ssl auth-totp branding display-statistics history-recording-storage vault-ksm; do
   rm -rf ${GUACAMOLE_HOME}/extensions/guacamole-${i}-${GUAC_VER}.jar
 done
 
