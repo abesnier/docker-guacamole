@@ -113,7 +113,7 @@ RUN set -xe && \
   && rm -rf guacamole-vault-${GUAC_VER} guacamole-vault-${GUAC_VER}.tar.gz
 
 COPY root /
-COPY root_alpine_pg16 /
+COPY root_alpine /
 
 ENV PATH=/usr/lib/postgresql/${PG_MAJOR}/bin:$PATH \
     GUACAMOLE_HOME=/config/guacamole \

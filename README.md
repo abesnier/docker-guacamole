@@ -1,8 +1,6 @@
-**Guacamole 1.5.4 has been released. The [master branch](https://GitHub.com/abesnier/docker-guacamole/tree/master) will now be used for Guacamole 1.5.4, and the [branch 1.4.0](https://GitHub.com/abesnier/docker-guacamole/tree/1.4.0) will still be maintained for Guacamole 1.4.0 for a few months, but will gradually be retired.**
-
 **If you decide to try the new images, make sure to delete the previous extensions. Go to the `config/guacamole/extensions` directory, and delete the files that contain 1.4.0 in their names (**`rm *1.4.0*.jar`**). Having multiple versions of the same extension will create issues. You can similarly clean the `extensions-available`.**
 
-**This is a fork of oznu/docker-guacamole, updated to tomcat 9.0.98 (guacamole is not compatible with tomcat10), postgresql 13/14/15 (see below), guacamole 1.5.5 (1.6.0 for github images), and s6_overlay 3.2.**
+**This is a fork of oznu/docker-guacamole, updated to tomcat 9.0.98 (guacamole is not compatible with tomcat10), postgresql 13/14/15/16/17 (see below), guacamole 1.5.5 (1.6.0 for github images), and s6_overlay 3.2.**
 
 **If you are looking to upgrade from Oznu's image, or from an image that uses a version of PostgreSQL lower than 13, please have a look at the  [upgrade instructions](https://GitHub.com/abesnier/docker-guacamole/blob/master/UPGRADE.md). It is written for my images, but can be adapted for any image.**
 
@@ -363,37 +361,37 @@ docker run \
 Currently the available extensions are:
 
 
-* [1.3.0] [1.4.0] [1.5.4] auth-ldap - [LDAP Authentication](https://guacamole.apache.org/doc/gug/ldap-auth.html)
+* auth-ldap - [LDAP Authentication](https://guacamole.apache.org/doc/gug/ldap-auth.html)
 
-* [1.3.0] [1.4.0] [1.5.4] auth-duo - [Duo two-factor authentication](https://guacamole.apache.org/doc/gug/duo-auth.html)
+* auth-duo - [Duo two-factor authentication](https://guacamole.apache.org/doc/gug/duo-auth.html)
 
-* [1.3.0] [1.4.0] [1.5.4] auth-header - [HTTP header authentication](https://guacamole.apache.org/doc/gug/header-auth.html)
+* auth-header - [HTTP header authentication](https://guacamole.apache.org/doc/gug/header-auth.html)
 
-* [1.3.0] [1.4.0] [1.5.4] auth-sso-cas - [CAS Authentication](https://guacamole.apache.org/doc/gug/cas-auth.html)
+* auth-sso-cas - [CAS Authentication](https://guacamole.apache.org/doc/gug/cas-auth.html)
 
-* [1.3.0] [1.4.0] [1.5.4] auth-sso-openid - [OpenID Connect authentication](https://guacamole.apache.org/doc/gug/openid-auth.html)
+* auth-sso-openid - [OpenID Connect authentication](https://guacamole.apache.org/doc/gug/openid-auth.html)
 
-* [1.3.0] [1.4.0] [1.5.4] auth-totp - [TOTP two-factor authentication](https://guacamole.apache.org/doc/gug/totp-auth.html)
+* auth-totp - [TOTP two-factor authentication](https://guacamole.apache.org/doc/gug/totp-auth.html)
 
-* [1.3.0] [1.4.0] [1.5.4] auth-quickconnect - [Ad-hoc connections extension](https://guacamole.apache.org/doc/gug/adhoc-connections.html)
+* auth-quickconnect - [Ad-hoc connections extension](https://guacamole.apache.org/doc/gug/adhoc-connections.html)
 
-* [1.3.0] [1.4.0] [1.5.4] auth-sso-saml - [SAML Authentication](https://guacamole.apache.org/doc/gug/saml-auth.html)
+* auth-sso-saml - [SAML Authentication](https://guacamole.apache.org/doc/gug/saml-auth.html)
 
-* [1.5.5] auth-sso-ssl - [SSL/Smart cards authenticatition](https://github.com/apache/guacamole-client/pull/797)
+* auth-sso-ssl - [SSL/Smart cards authenticatition](https://github.com/apache/guacamole-client/pull/797)
 
-* [1.4.0] [1.5.4] auth-sso - SSO Authentication metapackage, contains classes for CAS, OpenID and SAML authentication (see links above)
+* auth-sso - SSO Authentication metapackage, contains classes for CAS, OpenID and SAML authentication (see links above)
 
-* [1.4.0] [1.5.4] auth-json - [Encrypted JSON Authentication](https://guacamole.apache.org/doc/gug/json-auth.html)
+* auth-json - [Encrypted JSON Authentication](https://guacamole.apache.org/doc/gug/json-auth.html)
 
-* [1.5.5] history-recording-storage - [In-application playback of recordings](https://guacamole.apache.org/doc/1.5.1/gug/recording-playback.html)
+* history-recording-storage - [In-application playback of recordings](https://guacamole.apache.org/doc/1.5.1/gug/recording-playback.html)
 
-* [1.5.4] vault - [Support for retrieving secrets from key vaults](https://guacamole.apache.org/doc/1.5.1/gug/vault.html)
+* vault - [Support for retrieving secrets from key vaults](https://guacamole.apache.org/doc/1.5.1/gug/vault.html)
 
-* [1.5.5] auth-ban - [Extension for automatically blocking brute-force auth attempts](https://GitHub.com/apache/guacamole-client/pull/758)
+* auth-ban - [Extension for automatically blocking brute-force auth attempts](https://GitHub.com/apache/guacamole-client/pull/758)
 
-* [1.5.5] display-statistics - [Display graphics statistics at the bottom of the cielnt screen for remote desktop sessions (remote desktop fps, server fps, cleint fps, dropped frames)](https://GitHub.com/apache/guacamole-client/pull/681)
+* display-statistics - [Display graphics statistics at the bottom of the cielnt screen for remote desktop sessions (remote desktop fps, server fps, cleint fps, dropped frames)](https://GitHub.com/apache/guacamole-client/pull/681)
 
-Extensions marked as available for version 1.5.5 are only available with the `github` tags (`github`, `github-pg14` and `github-pg15`).
+* [1.6.0 only] auth-restrict - Currently undocumented extension. Allows the admin to restrict when a user is allowed to connect, and when a connection is available to an user.
 
 You should only enable the extensions you require, if an extensions is not configured correctly in the `guacamole.properties` file it may prevent the system from loading. See the [official documentation](https://guacamole.apache.org/doc/gug/) for more details.
 
@@ -446,7 +444,7 @@ For example, [Issue #22](https://GitHub.com/abesnier/docker-guacamole/issues/22)
 
 
 ### I upgraded to a newer version of Guacamole and/or PostegreSQL, and 2FA Authentication does not work anymore.
-It is possible that after some upgrades, either in the Guacamole version, or to a newer PostgreSQL version (13 to 14 or 15, after you carefully follow the [instructions here](https://GitHub.com/abesnier/docker-guacamole/blob/master/UPGRADE.md) for example), you are faced with an error message after entering your TOTP token. Guacamole will display the message "Verification failed. Please try again.".
+It is possible that after some upgrades, either in the Guacamole version, or to a newer PostgreSQL version (13 to 14 or 15 or higher, after you carefully follow the [instructions here](https://GitHub.com/abesnier/docker-guacamole/blob/master/UPGRADE.md) for example), you are faced with an error message after entering your TOTP token. Guacamole will display the message "Verification failed. Please try again.".
 
 There are multiple causes to this issues I believe.
 
@@ -634,18 +632,14 @@ And of course, don't forget to look at the [official documentation](https://guac
 
 ## License
 
-Copyright (C) 2021-2024 abesnier
+Copyright (C) 2021-2025 abesnier
 
 Copyright (C) 2017-2020 oznu
 
-
 Apache Guacamole is released under the Apache License version 2.0.
 
-
-Extensions uses third-party modules. To consult the licensing for each module, download the extension from https://guacamole.apache.org/releases/1.5.1/, extract it, and check the content of the `bundled` directory.
-
+Extensions uses third-party modules. To consult the licensing for each module, download the extension from https://guacamole.apache.org/releases/1.5.5/, extract it, and check the content of the `bundled` directory.
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the [GNU General Public License](./LICENSE) for more details.

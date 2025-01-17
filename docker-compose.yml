@@ -1,7 +1,6 @@
 # This is  sample docker-compose file. 
 # Do not forget to adapt it to your use case, especially the extensions (loading an non configured extensions will result in unexpected behaviour!)
 
-version: '3'
 services:
     guacamole:
         image: abesnier/guacamole
