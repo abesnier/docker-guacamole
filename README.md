@@ -15,6 +15,8 @@ Ubuntu | guacamole:1.5.5 <br> guacamole:latest | guacamole:1.5.5-pg14 <br> guaca
 Alpine | N/A | guacamole:1.5.5-alpine | guacamole:1.5.5-alpine-pg15 | guacamole:1.5.5-alpine-pg16
 
 # What's- new / Changelog
+**2024-01-20** - PG17 images seem to be working ok, so please consider them available
+
 **2024-01-15** - Testing images with PostGreSQL 17 (alpine, ubuntu and github variants)
 
 **2024-12-10** - Updated to Tomcat 9.0.98
