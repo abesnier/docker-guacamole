@@ -15,7 +15,6 @@ Ubuntu | guacamole:1.5.5 <br> guacamole:latest | guacamole:1.5.5-pg14 <br> guaca
 Alpine | N/A | guacamole:1.5.5-alpine | guacamole:1.5.5-alpine-pg15 | guacamole:1.5.5-alpine-pg16 | guacamole:1.5.5-alpine-pg17
 Built from Github | guacamole:github <br> guacamole:github-pg13 | guacamole:github-pg14 | guacamole:github-pg15 | guacamole:github-pg16 | guacamole:github-pg17
 
-
 # What's- new / Changelog
 **2025-01-21** - Modified building process by simplifying Dockerfiles and docker-compose, etc... This allows me to build faster and save CPU usage! This does not change the content of the images, but will allow me to update faster! 
 
@@ -397,7 +396,7 @@ Currently the available extensions are:
 
 * display-statistics - [Display graphics statistics at the bottom of the cielnt screen for remote desktop sessions (remote desktop fps, server fps, cleint fps, dropped frames)](https://GitHub.com/apache/guacamole-client/pull/681)
 
-* [1.6.0 only] auth-restrict - Currently undocumented extension. Allows the admin to restrict when a user is allowed to connect, and when a connection is available to an user.
+* [1.6.0 only] auth-restrict - [1.6.0 Extension, documentation available on Github](https://github.com/apache/guacamole-manual/blob/main/src/auth-restrict.md). Allows the admin to restrict when a user is allowed to connect, and when a connection is available to an user.
 
 You should only enable the extensions you require, if an extensions is not configured correctly in the `guacamole.properties` file it may prevent the system from loading. See the [official documentation](https://guacamole.apache.org/doc/gug/) for more details.
 
