@@ -9,7 +9,7 @@
 
 # Summary of images
 Base OS | PostgreSQL 13 | PostgreSQL 14 | PostgreSQL 15 | PostgreSQL 16 | PostgreSQL 17
----|---|---|---|---
+---|---|---|---|---|---
 Bullseye | guacamole:1.5.4-bullseye | N/A | N/A | N/A | N/A
 Ubuntu | guacamole:1.5.5 <br> guacamole:latest | guacamole:1.5.5-pg14 <br> guacamole:latest-pg14 | guacamole:1.5.5-pg15 <br> guacamole:latest-pg15 | guacamole:1.5.5-pg16 <br> guacamole:latest-pg16 | guacamole:1.5.5-pg17 <br> guacamole:latest-pg17
 Alpine | N/A | guacamole:1.5.5-alpine | guacamole:1.5.5-alpine-pg15 | guacamole:1.5.5-alpine-pg16 | guacamole:1.5.5-alpine-pg17
