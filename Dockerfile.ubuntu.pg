@@ -7,7 +7,7 @@
 FROM ubuntu-base
 
 ARG PG_VERSION
-ENV PG_MAJOR=16
+ENV PG_MAJOR=${PG_VERSION}
 ENV PATH=/usr/lib/postgresql/${PG_MAJOR}/bin:$PATH
 
 RUN apt-get install  postgresql-${PG_MAJOR} -y \
