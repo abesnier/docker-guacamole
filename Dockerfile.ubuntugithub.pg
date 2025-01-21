@@ -3,8 +3,9 @@
 # Maintained by Antoine Besnier <nouanda@laposte.net>
 #
 # 2022-12-19 - Changelog maintained in README.md
-  
-FROM ubuntu-base
+
+ARG BASE  
+FROM ${BASE}
 
 ARG PG_VERSION
 ENV PG_MAJOR=${PG_VERSION}
