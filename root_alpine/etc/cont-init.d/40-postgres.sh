@@ -9,5 +9,5 @@ chmod 0700 /config/postgres
 if [ -e /config/postgres/postgresql.conf ]; then
   echo "Database already configured"
 else
-  s6-setuidgid postgres /usr/libexec/postgresql14/initdb
+  s6-setuidgid postgres /usr/libexec/postgresql${PG_MAJOR}/initdb
 fi
