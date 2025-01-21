@@ -1,0 +1,30 @@
+# Dockerfile for guacamole, forked from oznu/docker-guacamole
+#
+# Maintained by Antoine Besnier <nouanda@laposte.net>
+#
+# 2022-12-19 - Changelog maintained in README.md
+  
+FROM github-base
+
+# Clean-up
+ARG PG_VERSION
+ENV PG_MAJOR=${PG_VERSION}
+ENV PATH=/usr/lib/postgresql/${PG_MAJOR}/bin:$PATH
+
+RUN apt-get install  postgresql-${PG_MAJOR} -y \
+  &&  apt-get purge -y \
+	  apt-transport-https \
+      binutils \
+      ca-certificates \
+      curl \
+      git \
+      gnupg2 \
+      gpg \
+      lsb-release \
+      make \
+      software-properties-common \
+    && apt-get autoremove --purge -y \
+    && apt-get autoclean -y \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /tmp/* /var/tmp/* ~/.m2 /git

@@ -15,6 +15,8 @@ Ubuntu | guacamole:1.5.5 <br> guacamole:latest | guacamole:1.5.5-pg14 <br> guaca
 Alpine | N/A | guacamole:1.5.5-alpine | guacamole:1.5.5-alpine-pg15 | guacamole:1.5.5-alpine-pg16
 
 # What's- new / Changelog
+**2024-01-21** - Modified building process by simplifying Dockerfiles and docker-compose, etc... This allows me to build faster and save CPU usage! This does not change the content of the images, but will allow me to update faster! 
+
 **2024-01-20** - PG17 images seem to be working ok, so please consider them available. Also, updated to PostgreSQL JDBC 42.7.5.
 
 **2024-01-15** - Testing images with PostGreSQL 17 (alpine, ubuntu and github variants)

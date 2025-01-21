@@ -14,8 +14,7 @@ ENV GUACAMOLE_HOME=/app/guacamole \
   POSTGREJDBC_VER=42.7.5 \
   GUAC_DOWN_PATH=https://dlcdn.apache.org/guacamole \
   GUAC_VER=1.5.5 \
-  GUAC_VER_PATH=1.5.5 \
-  PG_MAJOR=13
+  GUAC_VER_PATH=1.5.5 
 
 RUN set -xe && apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
       apt-transport-https  \
@@ -74,7 +73,6 @@ RUN set -xe && apt-get update && apt-get upgrade -y && apt-get install -y --no-i
       libwebp-dev \
       libwebsockets-dev \
       make \
-      postgresql-${PG_MAJOR} \
       xmlstarlet \
 # Link FreeRDP to where guac expects it to be
 && ( ln -s /usr/local/lib/freerdp /usr/lib/arm-linux-gnueabihf/freerdp ||  \
@@ -127,29 +125,11 @@ RUN set -xe && apt-get update && apt-get upgrade -y && apt-get install -y --no-i
   && for i in ksm; do \
     cp guacamole-vault-${GUAC_VER}/${i}/guacamole-vault-${i}-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions-available/ \
   ;done \
-  && rm -rf guacamole-vault-${GUAC_VER} guacamole-vault-${GUAC_VER}.tar.gz \
-# Clean-up
-    && apt-get purge -y \
-	  apt-transport-https \
-      binutils \
-      ca-certificates \
-      curl \
-      git \
-      gnupg2 \
-      gpg \
-      lsb-release \
-      make \
-      software-properties-common \
-    && apt-get autoremove --purge -y \
-    && apt-get autoclean -y \
-    && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /tmp/* /var/tmp/* ~/.m2 /git
+  && rm -rf guacamole-vault-${GUAC_VER} guacamole-vault-${GUAC_VER}.tar.gz 
 
 COPY ./guacamole-branding-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions
 COPY ./guacamole-branding-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions-available
 
-ENV PATH=/usr/lib/postgresql/${PG_MAJOR}/bin:$PATH
 ENV GUACAMOLE_HOME=/config/guacamole
 ENV GUACD_LOG_LEVEL=info
 ENV S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0

@@ -1,0 +1,7 @@
+FROM alpine-base
+
+ARG PG_VERSION
+ENV PG_MAJOR=${PG_VERSION}
+ENV PATH=/usr/lib/postgresql/${PG_MAJOR}/bin:$PATH 
+
+RUN apk add postgresql${PG_MAJOR}

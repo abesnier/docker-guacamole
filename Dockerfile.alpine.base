@@ -10,7 +10,6 @@ ENV CATALINA_HOME=/opt/tomcat \
     GUAC_DOWN_PATH=https://dlcdn.apache.org/guacamole \
     GUAC_VER=1.5.5 \
     GUAC_VER_PATH=1.5.5 \
-    PG_MAJOR=15 \
     TOMCAT_VER=9.0.98
 
 RUN set -xe && \
@@ -39,7 +38,6 @@ RUN set -xe && \
             openssl-dev \
             libvorbis-dev \ 
             libwebp-dev \
-            postgresql${PG_MAJOR} \
             ttf-dejavu \
             xmlstarlet \
     && cd /tmp && \
@@ -115,8 +113,7 @@ RUN set -xe && \
 COPY root /
 COPY root_alpine /
 
-ENV PATH=/usr/lib/postgresql/${PG_MAJOR}/bin:$PATH \
-    GUACAMOLE_HOME=/config/guacamole \
+ENV GUACAMOLE_HOME=/config/guacamole \
     GUACD_LOG_LEVEL=info \
     S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0
 
