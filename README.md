@@ -15,11 +15,11 @@ Ubuntu | guacamole:1.5.5 <br> guacamole:latest | guacamole:1.5.5-pg14 <br> guaca
 Alpine | N/A | guacamole:1.5.5-alpine | guacamole:1.5.5-alpine-pg15 | guacamole:1.5.5-alpine-pg16
 
 # What's- new / Changelog
-**2024-01-21** - Modified building process by simplifying Dockerfiles and docker-compose, etc... This allows me to build faster and save CPU usage! This does not change the content of the images, but will allow me to update faster! 
+**2025-01-21** - Modified building process by simplifying Dockerfiles and docker-compose, etc... This allows me to build faster and save CPU usage! This does not change the content of the images, but will allow me to update faster! 
 
-**2024-01-20** - PG17 images seem to be working ok, so please consider them available. Also, updated to PostgreSQL JDBC 42.7.5.
+**2025-01-20** - PG17 images seem to be working ok, so please consider them available. Also, updated to PostgreSQL JDBC 42.7.5.
 
-**2024-01-15** - Testing images with PostGreSQL 17 (alpine, ubuntu and github variants)
+**2025-01-15** - Testing images with PostGreSQL 17 (alpine, ubuntu and github variants)
 
 **2024-12-10** - Updated to Tomcat 9.0.98
 
@@ -28,6 +28,9 @@ Alpine | N/A | guacamole:1.5.5-alpine | guacamole:1.5.5-alpine-pg15 | guacamole:
 **2024-09-26** - Updated to Tomcat 9.0.95
 
 **2024-08-21** - Updated to Tomcat 9.0.94
+
+<details>
+<summary>Older changelog entries</summary>
 
 **2024-09-04** - Fixed an issue with PostgreSQL 16 images ([Issue #40](https://GitHub.com/abesnier/docker-guacamole/issues/40))
 
@@ -54,9 +57,6 @@ Alpine | N/A | guacamole:1.5.5-alpine | guacamole:1.5.5-alpine-pg15 | guacamole:
 **2024-02-01** - Updated Guacamole to 1.5.5 for the Github images
 
 **2024-01-10** - Updated to Tomcat 9.0.85
-
-<details>
-<summary>Older changelog entries</summary>
 
 **2023-12-14** - Updated to Tomcat 9.0.84
 
