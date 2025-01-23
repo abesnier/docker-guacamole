@@ -72,13 +72,17 @@ RUN set -xe && \
                          ${GUACAMOLE_HOME}/extensions-available \
                          /git &&\
     wget https://dlcdn.apache.org/tomcat/tomcat-9/v$TOMCAT_VER/bin/apache-tomcat-$TOMCAT_VER.tar.gz --no-check-certificate && \
-    tar xvzf apache-tomcat-$TOMCAT_VER.tar.gz --strip-components 1 --directory /opt/tomcat &&\
-    cd /git && \
-    git clone https://github.com/apache/guacamole-server.git --depth=1 -b main && cd guacamole-server -f && autoreconf -fi && \
-    ./configure --enable-allow-freerdp-snapshots  --with-init-dir=/etc/init.d &&\
-    cd /git/guacamole-server && \
+    tar xvzf apache-tomcat-$TOMCAT_VER.tar.gz --strip-components 1 --directory /opt/tomcat && \
+    export LDFLAGS="-lrt" && \
+    curl -SLO "${GUAC_DOWN_PATH}/${GUAC_VER_PATH}/source/guacamole-server-${GUAC_VER}.tar.gz" && \
+    tar -xzf guacamole-server-${GUAC_VER}.tar.gz && \
+    cd guacamole-server-${GUAC_VER} && \
+    autoreconf -fi && \
+    ./configure --enable-allow-freerdp-snapshots && \
     make -j$(getconf _NPROCESSORS_ONLN) && \
     make install && \
+    cd .. && \
+    rm -rf guacamole-server-${GUAC_VER}.tar.gz guacamole-server-${GUAC_VER} && \
     ldconfig -v /usr/local/lib &&\
     rm -rf ${CATALINA_HOME}/webapps/ROOT &&\
     curl -SLo ${CATALINA_HOME}/webapps/ROOT.war "${GUAC_DOWN_PATH}/${GUAC_VER_PATH}/binary/guacamole-${GUAC_VER}.war" && \

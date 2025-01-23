@@ -82,9 +82,10 @@ RUN set -xe && apt-get update && apt-get upgrade -y && apt-get install -y --no-i
 	 ln -s /usr/local/lib/freerdp /usr/lib/ppc64el-linux-gnu/freerdp   || \
 	 ln -s /usr/local/lib/freerdp /usr/lib/aarch64-linux-gnu/freerdp   || true ) \
 # Install guacamole-server
-  && mkdir /git \
-  && cd /git && git clone https://github.com/apache/guacamole-server.git --depth=1 -b main \
-  && cd guacamole-server \
+  && export LDFLAGS="-lrt" \
+  && curl -SLO "${GUAC_DOWN_PATH}/${GUAC_VER_PATH}/source/guacamole-server-${GUAC_VER}.tar.gz" \
+  && tar -xzf guacamole-server-${GUAC_VER}.tar.gz \
+  && cd guacamole-server-${GUAC_VER} \
   && autoreconf -fi \
   && ./configure --enable-allow-freerdp-snapshots \
   && make -j$(getconf _NPROCESSORS_ONLN) \
