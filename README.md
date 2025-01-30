@@ -16,6 +16,8 @@ Alpine | N/A | guacamole:1.5.5-alpine | guacamole:1.5.5-alpine-pg15 | guacamole:
 Built from Github | guacamole:github <br> guacamole:github-pg13 | guacamole:github-pg14 | guacamole:github-pg15 | guacamole:github-pg16 | guacamole:github-pg17
 
 # What's- new / Changelog
+**2025-01-30** - Modified start-uo script to remove all extensions from the extensions directory. This will prevent old versions to remain unused, and any way, extensions are populated back at start up from the image.
+
 **2025-01-21** - Modified building process by simplifying Dockerfiles and docker-compose, etc... This allows me to build faster and save CPU usage! This does not change the content of the images, but will allow me to update faster! 
 
 **2025-01-20** - PG17 images seem to be working ok, so please consider them available. Also, updated to PostgreSQL JDBC 42.7.5.
