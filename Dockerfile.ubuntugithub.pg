@@ -12,8 +12,8 @@ ENV PG_MAJOR=${PG_VERSION}
 ENV PATH=/usr/lib/postgresql/${PG_MAJOR}/bin:$PATH
 
 RUN apt-get install  postgresql-${PG_MAJOR} -y \
-    && apt-get purge -y \
-	  apt-transport-https \
+    && apt-get --purge autoremove -y \
+      apt-transport-https \
       binutils \
       ca-certificates \
       curl \

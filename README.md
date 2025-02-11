@@ -1,6 +1,6 @@
 **If you decide to try the new images, make sure to delete the previous extensions. Go to the `config/guacamole/extensions` directory, and delete the files that contain 1.4.0 in their names (**`rm *1.4.0*.jar`**). Having multiple versions of the same extension will create issues. You can similarly clean the `extensions-available`.**
 
-**This is a fork of oznu/docker-guacamole, updated to tomcat 9.0.98 (guacamole is not compatible with tomcat10), postgresql 13/14/15/16/17 (see below), guacamole 1.5.5 (1.6.0 for github images), and s6_overlay 3.2.**
+**This is a fork of oznu/docker-guacamole, updated to tomcat 9.0.99 (guacamole is not compatible with tomcat10), postgresql 13/14/15/16/17 (see below), guacamole 1.5.5 (1.6.0 for github images), and s6_overlay 3.2.**
 
 **If you are looking to upgrade from Oznu's image, or from an image that uses a version of PostgreSQL lower than 13, please have a look at the  [upgrade instructions](https://GitHub.com/abesnier/docker-guacamole/blob/master/UPGRADE.md). It is written for my images, but can be adapted for any image.**
 
@@ -16,6 +16,8 @@ Alpine | N/A | guacamole:1.5.5-alpine | guacamole:1.5.5-alpine-pg15 | guacamole:
 Built from Github | guacamole:github <br> guacamole:github-pg13 | guacamole:github-pg14 | guacamole:github-pg15 | guacamole:github-pg16 | guacamole:github-pg17
 
 # What's- new / Changelog
+**2025-02-11** - Updated to Tomcat 9.0.99
+
 **2025-02-07** - Re-tagged the alpine based images, shorter names.
 
 **2025-01-30** - Modified start-up script to remove all extensions from the extensions directory. This will prevent old versions to remain unused, and any way, extensions are populated back at start up from the image.
