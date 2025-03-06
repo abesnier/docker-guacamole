@@ -16,6 +16,8 @@ Alpine | N/A | guacamole:1.5.5-alpine | guacamole:1.5.5-alpine-pg15 | guacamole:
 Built from Github | guacamole:github <br> guacamole:github-pg13 | guacamole:github-pg14 | guacamole:github-pg15 | guacamole:github-pg16 | guacamole:github-pg17
 
 # What's- new / Changelog
+**2025-03-06** - Updated to Tomcat 9.0.100
+
 **2025-02-11** - Updated to Tomcat 9.0.99
 
 **2025-02-07** - Re-tagged the alpine based images, shorter names.
