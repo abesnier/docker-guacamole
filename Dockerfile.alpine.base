@@ -1,4 +1,5 @@
-FROM alpine:edge
+ARG BASE
+FROM alpine:${BASE}
 
 ENV CATALINA_HOME=/opt/tomcat \
     GUACAMOLE_HOME=/app/guacamole \
@@ -10,12 +11,11 @@ ENV CATALINA_HOME=/opt/tomcat \
     GUAC_DOWN_PATH=https://dlcdn.apache.org/guacamole \
     GUAC_VER=1.5.5 \
     GUAC_VER_PATH=1.5.5 \
-    TOMCAT_VER=9.0.102
+    TOMCAT_VER=9.0.104
 
 RUN set -xe && \
-    apk update && \
-    apk upgrade && \
-    apk add openjdk8-jre \
+    apk add --update --no-cache \
+            openjdk8-jre \
             git \  
             curl \  
             libc-dev \ 
