@@ -16,6 +16,8 @@ Alpine | N/A | guacamole:1.5.5-alpine | guacamole:1.5.5-alpine-pg15 | guacamole:
 Built from Github | guacamole:github <br> guacamole:github-pg13 | guacamole:github-pg14 | guacamole:github-pg15 | guacamole:github-pg16 | guacamole:github-pg17
 
 # What's- new / Changelog
+**2025-05-07** - Updated to S6 Overlay 3.2.0.3
+
 **2025-04-04** - Updated to Tomcat 9.0.104
 
 **2025-04-09** - There was an issue with installing PostgreSQL 14 under Alpine Edge, so Alpine image with PG14 is forced to use Alpine 3.20.
