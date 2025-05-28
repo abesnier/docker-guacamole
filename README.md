@@ -16,6 +16,8 @@ Alpine | N/A | guacamole:1.5.5-alpine | guacamole:1.5.5-alpine-pg15 | guacamole:
 Built from Github | guacamole:github <br> guacamole:github-pg13 | guacamole:github-pg14 | guacamole:github-pg15 | guacamole:github-pg16 | guacamole:github-pg17
 
 # What's- new / Changelog
+**2025-05-28** - Added github-*-noble images. They are still using all the same components, but are based on Ubuntu Noble instead of Jammy, and use FreeRDP 3 instead of FreeRDP 2.
+
 **2025-05-15** - All images updated to Tomcat 9.0.105
 
 **2025-05-13** - Updated to S6 Overlay 3.2.1.0, and Tomcat 9.0.105 for Alpine (not the other images)
