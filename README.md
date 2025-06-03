@@ -16,7 +16,9 @@ Alpine | N/A | guacamole:1.5.5-alpine | guacamole:1.5.5-alpine-pg15 | guacamole:
 Built from Github | guacamole:github <br> guacamole:github-pg13 | guacamole:github-pg14 | guacamole:github-pg15 | guacamole:github-pg16 | guacamole:github-pg17
 
 # What's- new / Changelog
-**2025-05-28** - Added github-*-noble images. They are still using all the same components, but are based on Ubuntu Noble instead of Jammy, and use FreeRDP 3 instead of FreeRDP 2.
+**2025-06-02** - Updated to PostgreSQL JDBC 42.7.6
+
+**2025-05-28** - Added github-*-noble images (see note below in the "Something's not working" section"). They are still using all the same components, but are based on Ubuntu Noble instead of Jammy, and use FreeRDP 3 instead of FreeRDP 2.
 
 **2025-05-15** - All images updated to Tomcat 9.0.105
 
@@ -33,6 +35,9 @@ Built from Github | guacamole:github <br> guacamole:github-pg13 | guacamole:gith
 **2025-03-06** - Updated to Tomcat 9.0.100
 
 **2025-02-11** - Updated to Tomcat 9.0.99
+
+<details>
+<summary>Older changelog entries</summary>
 
 **2025-02-07** - Re-tagged the alpine based images, shorter names.
 
@@ -51,9 +56,6 @@ Built from Github | guacamole:github <br> guacamole:github-pg13 | guacamole:gith
 **2024-09-26** - Updated to Tomcat 9.0.95
 
 **2024-08-21** - Updated to Tomcat 9.0.94
-
-<details>
-<summary>Older changelog entries</summary>
 
 **2024-09-04** - Fixed an issue with PostgreSQL 16 images ([Issue #40](https://GitHub.com/abesnier/docker-guacamole/issues/40))
 
@@ -301,7 +303,7 @@ Oh, and by the way, updated to s6 overlay 3.1.1.1
 
 `github-pg17` , Guacamole **1.6.0** (server built from [Github](https://github.com/apache/guacamole-server), client downloaded from [official website](https://guacamole.apache.org/releases/), based on [latest available Tomcat 9.0.* (Ubuntu Jammy, Temurin OpenJDK JRE)](https://hub.docker.com/_/tomcat/tags) base image at time of build, PostgreSQL **17**, [latest PostgreSQL JDBC Driver available](https://jdbc.postgresql.org/) at time of build, [latest S6 Overlay available](https://github.com/just-containers/s6-overlay/releases) at time of build
 
-
+** Note: the github images are also avaible in a *-noble varaitn, based on Ubunut Noble instead of Jammy, to be able to use FreeRDP 3 instead of FreeRDP 2. **
 
 ## Stale/unmaintained tags
 
@@ -463,6 +465,22 @@ See [docker-compose.yml](https://GitHub.com/abesnier/docker-guacamole/blob/maste
 
 
 ## Something's not working, what to do?
+
+### I've updated to the Noble images, and I get POSTGRESQL errors, what's wrong?
+Thanks to [SirOch27](https://github.com/abesnier/docker-guacamole/issues/49) for reporting this oversight from my part.
+
+Between Jammy and Noble, the collation version of PSQL has been updated. Therefore, if you are upgrading in place, you may see such messages in your logs:
+
+```2025-06-03 13:01:34.973 CEST [190] WARNING: database "postgres" has a collation version mismatch
+2025-06-03 13:01:34.973 CEST [190] DETAIL: The database was created using collation version 2.35, but the operating system provides version 2.39.
+2025-06-03 13:01:34.973 CEST [190] HINT: Rebuild all objects in this database that use the default collation and run ALTER DATABASE postgres REFRESH COLLATION VERSION, or build PostgreSQL with the right library version.
+WARNING: database "postgres" has a collation version mismatch```
+
+The fix is very easy, you can run this simple one-liner:
+
+`docker exec -it guacamole sh -c "runuser -u postgres -- psql -c 'ALTER DATABASE guacamole_db REFRESH COLLATION VERSION;'"`
+
+
 
 ### Guacamole does not show the real IP, but the docker interface one's
 There are multiple ways to show the real IP of the users, and it depends on your network configuration, and/or docker configuration.
