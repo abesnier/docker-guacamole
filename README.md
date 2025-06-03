@@ -471,10 +471,12 @@ Thanks to [SirOch27](https://github.com/abesnier/docker-guacamole/issues/49) for
 
 Between Jammy and Noble, the collation version of PSQL has been updated. Therefore, if you are upgrading in place, you may see such messages in your logs:
 
-```2025-06-03 13:01:34.973 CEST [190] WARNING: database "postgres" has a collation version mismatch
+```
+2025-06-03 13:01:34.973 CEST [190] WARNING: database "postgres" has a collation version mismatch
 2025-06-03 13:01:34.973 CEST [190] DETAIL: The database was created using collation version 2.35, but the operating system provides version 2.39.
 2025-06-03 13:01:34.973 CEST [190] HINT: Rebuild all objects in this database that use the default collation and run ALTER DATABASE postgres REFRESH COLLATION VERSION, or build PostgreSQL with the right library version.
-WARNING: database "postgres" has a collation version mismatch```
+WARNING: database "postgres" has a collation version mismatch
+```
 
 The fix is very easy, you can run this simple one-liner:
 
