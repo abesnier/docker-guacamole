@@ -15,10 +15,10 @@ Ubuntu | guacamole:1.5.5 <br> guacamole:latest | guacamole:1.5.5-pg14 <br> guaca
 Alpine | N/A | guacamole:1.5.5-alpine | guacamole:1.5.5-alpine-pg15 | guacamole:1.5.5-alpine-pg16 | guacamole:1.5.5-alpine-pg17
 Built from Github | guacamole:github <br> guacamole:github-pg13 | guacamole:github-pg14 | guacamole:github-pg15 | guacamole:github-pg16 | guacamole:github-pg17
 
-# What's- new / Changelog
+# What's new / Changelog
 **2025-06-02** - Updated to PostgreSQL JDBC 42.7.6
 
-**2025-05-28** - Added github-*-noble images (see note below in the "Something's not working" section"). They are still using all the same components, but are based on Ubuntu Noble instead of Jammy, and use FreeRDP 3 instead of FreeRDP 2.
+**2025-05-28** - Added github-*-noble images (see [note below in the "Something's not working" section](https://github.com/abesnier/docker-guacamole?tab=readme-ov-file#ive-updated-to-the-noble-images-and-i-get-postgresql-errors-whats-wrong)). They are still using all the same components, but are based on Ubuntu Noble instead of Jammy, and use FreeRDP 3 instead of FreeRDP 2.
 
 **2025-05-15** - All images updated to Tomcat 9.0.105
 
