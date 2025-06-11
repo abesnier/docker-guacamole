@@ -4,7 +4,7 @@
 #
 # 2022-12-19 - Changelog maintained in README.md
 
-FROM library/tomcat:9.0.105-jre11-temurin-jammy
+FROM library/tomcat:9.0.106-jre11-temurin-jammy
 
 ENV GUACAMOLE_HOME=/app/guacamole \
   PGDATA=/config/postgres \
