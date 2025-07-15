@@ -1,6 +1,6 @@
 **If you decide to try the new images, make sure to delete the previous extensions. Go to the `config/guacamole/extensions` directory, and delete the files that contain 1.4.0 in their names (**`rm *1.4.0*.jar`**). Having multiple versions of the same extension will create issues. You can similarly clean the `extensions-available`.**
 
-**This is a fork of oznu/docker-guacamole, updated to tomcat 9.0.&ast; (guacamole is not compatible with tomcat10), postgresql 13/14/15/16/17 (see below), guacamole 1.5.5 (1.6.0 for github images), and s6_overlay 3.2.**
+**This is a fork of oznu/docker-guacamole, updated to tomcat 9.0.&ast; (guacamole is not compatible with tomcat10), postgresql 13/14/15/16/17 (see below), guacamole 1.6.0, and s6_overlay 3.2.**
 
 **If you are looking to upgrade from Oznu's image, or from an image that uses a version of PostgreSQL lower than 13, please have a look at the  [upgrade instructions](https://GitHub.com/abesnier/docker-guacamole/blob/master/UPGRADE.md). It is written for my images, but can be adapted for any image.**
 
@@ -10,12 +10,17 @@
 # Summary of images
 Base OS | PostgreSQL 13 | PostgreSQL 14 | PostgreSQL 15 | PostgreSQL 16 | PostgreSQL 17
 ---|---|---|---|---|---
-Bullseye | guacamole:1.5.4-bullseye | N/A | N/A | N/A | N/A
-Ubuntu | guacamole:1.5.5 <br> guacamole:latest | guacamole:1.5.5-pg14 <br> guacamole:latest-pg14 | guacamole:1.5.5-pg15 <br> guacamole:latest-pg15 | guacamole:1.5.5-pg16 <br> guacamole:latest-pg16 | guacamole:1.5.5-pg17 <br> guacamole:latest-pg17
+Bullseye | guacamole:1.5.5-bullseye | N/A | N/A | N/A | N/A
+Bullseye | guacamole:1.6.0-bullseye | N/A | N/A | N/A | N/A
+Ubuntu | guacamole:1.5.5 | guacamole:1.5.5-pg14 | guacamole:1.5.5-pg15 | guacamole:1.5.5-pg16 | guacamole:1.5.5-pg17 
 Alpine | N/A | guacamole:1.5.5-alpine | guacamole:1.5.5-alpine-pg15 | guacamole:1.5.5-alpine-pg16 | guacamole:1.5.5-alpine-pg17
+Ubuntu | guacamole:1.6.0 <br> guacamole:latest | guacamole:1.6.0-pg14 <br> guacamole:latest-pg14 | guacamole:1.6.0-pg15 <br> guacamole:latest-pg15 | guacamole:1.6.0-pg16 <br> guacamole:latest-pg16 | guacamole:1.6.0-pg17 <br> guacamole:latest-pg17
+Alpine | N/A | guacamole:1.6.0-alpine | guacamole:1.6.0-alpine-pg15 | guacamole:1.6.0-alpine-pg16 | guacamole:1.6.0-alpine-pg17
 Built from Github | guacamole:github <br> guacamole:github-pg13 | guacamole:github-pg14 | guacamole:github-pg15 | guacamole:github-pg16 | guacamole:github-pg17
 
 # What's new / Changelog
+**2025-07-15** - Finally took the time to update this README with the proper tags for 1.6.0...
+
 **2025-07-07** - Updated to Tomcat 9.0.107
 
 **2025-06-24** - Updated to Guacamole 1.6.0!! See the available tags to know which version to use. I'll update this readme a bit later.
@@ -281,15 +286,25 @@ Oh, and by the way, updated to s6 overlay 3.1.1.1
 
 # Available tags
 
-`latest`, `1.5.5` , Guacamole **1.5.5** (server and client downloaded from [official website](https://guacamole.apache.org/releases/), based on [latest available Tomcat 9.0.*](https://hub.docker.com/_/tomcat/tags)(Ubuntu Jammy, Temurin OpenJDK JRE) base image at time of build, PostgreSQL **13**, [latest PostgreSQL JDBC Driver available](https://jdbc.postgresql.org/) at time of build, [latest S6 Overlay available](https://github.com/just-containers/s6-overlay/releases) at time of build
+`1.6.0`,`latest` , Guacamole **1.5.5** (server and client downloaded from [official website](https://guacamole.apache.org/releases/), based on [latest available Tomcat 9.0.*](https://hub.docker.com/_/tomcat/tags)(Ubuntu Jammy, Temurin OpenJDK JRE) base image at time of build, PostgreSQL **13**, [latest PostgreSQL JDBC Driver available](https://jdbc.postgresql.org/) at time of build, [latest S6 Overlay available](https://github.com/just-containers/s6-overlay/releases) at time of build
 
-`latest-pg14`, `1.5.5-pg14`, Guacamole **1.5.5** (server and client downloaded from [official website](https://guacamole.apache.org/releases/), based on [latest available Tomcat 9.0.*](https://hub.docker.com/_/tomcat/tags)(Ubuntu Jammy, Temurin OpenJDK JRE) base image at time of build, PostgreSQL **14**, [latest PostgreSQL JDBC Driver available](https://jdbc.postgresql.org/) at time of build, [latest S6 Overlay available](https://github.com/just-containers/s6-overlay/releases) at time of build
+`1.6.0-pg14`,`latest-pg14` , Guacamole **1.5.5** (server and client downloaded from [official website](https://guacamole.apache.org/releases/), based on [latest available Tomcat 9.0.*](https://hub.docker.com/_/tomcat/tags)(Ubuntu Jammy, Temurin OpenJDK JRE) base image at time of build, PostgreSQL **14**, [latest PostgreSQL JDBC Driver available](https://jdbc.postgresql.org/) at time of build, [latest S6 Overlay available](https://github.com/just-containers/s6-overlay/releases) at time of build
 
-`latest-pg15`, `1.5.5-pg15`, Guacamole **1.5.5** (server and client downloaded from [official website](https://guacamole.apache.org/releases/), based on [latest available Tomcat 9.0.*](https://hub.docker.com/_/tomcat/tags)(Ubuntu Jammy, Temurin OpenJDK JRE) base image at time of build, PostgreSQL **15**, [latest PostgreSQL JDBC Driver available](https://jdbc.postgresql.org/) at time of build, [latest S6 Overlay available](https://github.com/just-containers/s6-overlay/releases) at time of build
+`1.6.0-pg15`,`latest-pg15` , Guacamole **1.5.5** (server and client downloaded from [official website](https://guacamole.apache.org/releases/), based on [latest available Tomcat 9.0.*](https://hub.docker.com/_/tomcat/tags)(Ubuntu Jammy, Temurin OpenJDK JRE) base image at time of build, PostgreSQL **15**, [latest PostgreSQL JDBC Driver available](https://jdbc.postgresql.org/) at time of build, [latest S6 Overlay available](https://github.com/just-containers/s6-overlay/releases) at time of build
 
-`latest-pg16`, `1.5.5-pg16`, Guacamole **1.5.5** (server and client downloaded from [official website](https://guacamole.apache.org/releases/), based on [latest available Tomcat 9.0.*](https://hub.docker.com/_/tomcat/tags)(Ubuntu Jammy, Temurin OpenJDK JRE)) base image at time of build, PostgreSQL **16**, [latest PostgreSQL JDBC Driver available](https://jdbc.postgresql.org/) at time of build, [latest S6 Overlay available](https://github.com/just-containers/s6-overlay/releases) at time of build
+`1.6.0-pg16`,`latest-pg16` , Guacamole **1.5.5** (server and client downloaded from [official website](https://guacamole.apache.org/releases/), based on [latest available Tomcat 9.0.*](https://hub.docker.com/_/tomcat/tags)(Ubuntu Jammy, Temurin OpenJDK JRE)) base image at time of build, PostgreSQL **16**, [latest PostgreSQL JDBC Driver available](https://jdbc.postgresql.org/) at time of build, [latest S6 Overlay available](https://github.com/just-containers/s6-overlay/releases) at time of build
 
-`latest-pg17`, `1.5.5-pg17`, Guacamole **1.5.5** (server and client downloaded from [official website](https://guacamole.apache.org/releases/), based on [latest available Tomcat 9.0.*](https://hub.docker.com/_/tomcat/tags)(Ubuntu Jammy, Temurin OpenJDK JRE) base image at time of build, PostgreSQL **17**, [latest PostgreSQL JDBC Driver available](https://jdbc.postgresql.org/) at time of build, [latest S6 Overlay available](https://github.com/just-containers/s6-overlay/releases) at time of build
+`1.6.0-pg17`,`latest-pg17` , Guacamole **1.5.5** (server and client downloaded from [official website](https://guacamole.apache.org/releases/), based on [latest available Tomcat 9.0.*](https://hub.docker.com/_/tomcat/tags)(Ubuntu Jammy, Temurin OpenJDK JRE) base image at time of build, PostgreSQL **17**, [latest PostgreSQL JDBC Driver available](https://jdbc.postgresql.org/) at time of build, [latest S6 Overlay available](https://github.com/just-containers/s6-overlay/releases) at time of build
+
+`1.5.5` , Guacamole **1.5.5** (server and client downloaded from [official website](https://guacamole.apache.org/releases/), based on [latest available Tomcat 9.0.*](https://hub.docker.com/_/tomcat/tags)(Ubuntu Jammy, Temurin OpenJDK JRE) base image at time of build, PostgreSQL **13**, [latest PostgreSQL JDBC Driver available](https://jdbc.postgresql.org/) at time of build, [latest S6 Overlay available](https://github.com/just-containers/s6-overlay/releases) at time of build
+
+`1.5.5-pg14`, Guacamole **1.5.5** (server and client downloaded from [official website](https://guacamole.apache.org/releases/), based on [latest available Tomcat 9.0.*](https://hub.docker.com/_/tomcat/tags)(Ubuntu Jammy, Temurin OpenJDK JRE) base image at time of build, PostgreSQL **14**, [latest PostgreSQL JDBC Driver available](https://jdbc.postgresql.org/) at time of build, [latest S6 Overlay available](https://github.com/just-containers/s6-overlay/releases) at time of build
+
+`1.5.5-pg15`, Guacamole **1.5.5** (server and client downloaded from [official website](https://guacamole.apache.org/releases/), based on [latest available Tomcat 9.0.*](https://hub.docker.com/_/tomcat/tags)(Ubuntu Jammy, Temurin OpenJDK JRE) base image at time of build, PostgreSQL **15**, [latest PostgreSQL JDBC Driver available](https://jdbc.postgresql.org/) at time of build, [latest S6 Overlay available](https://github.com/just-containers/s6-overlay/releases) at time of build
+
+`1.5.5-pg16`, Guacamole **1.5.5** (server and client downloaded from [official website](https://guacamole.apache.org/releases/), based on [latest available Tomcat 9.0.*](https://hub.docker.com/_/tomcat/tags)(Ubuntu Jammy, Temurin OpenJDK JRE)) base image at time of build, PostgreSQL **16**, [latest PostgreSQL JDBC Driver available](https://jdbc.postgresql.org/) at time of build, [latest S6 Overlay available](https://github.com/just-containers/s6-overlay/releases) at time of build
+
+`1.5.5-pg17`, Guacamole **1.5.5** (server and client downloaded from [official website](https://guacamole.apache.org/releases/), based on [latest available Tomcat 9.0.*](https://hub.docker.com/_/tomcat/tags)(Ubuntu Jammy, Temurin OpenJDK JRE) base image at time of build, PostgreSQL **17**, [latest PostgreSQL JDBC Driver available](https://jdbc.postgresql.org/) at time of build, [latest S6 Overlay available](https://github.com/just-containers/s6-overlay/releases) at time of build
 
 `alpine`,`alpine-pg14`,`1.5.5-alpine`,`1.5.5-alpine-pg14` , Guacamole **1.5.5** (server built from Github, client downloaded from [official website](https://guacamole.apache.org/releases/), based on [latest available Alpine Edge](https://hub.docker.com/_/alpine/tags?name=edge) base image at time of build, PostgreSQL **14**, [latest PostgreSQL JDBC Driver available](https://jdbc.postgresql.org/) at time of build, [latest S6 Overlay available](https://github.com/just-containers/s6-overlay/releases) at time of build
 
