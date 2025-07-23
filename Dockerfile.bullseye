@@ -40,9 +40,8 @@ RUN apt-get update && apt-get upgrade -y && \
               ${GUACAMOLE_HOME}/extensions-available \
 && cd ${GUACAMOLE_HOME} \
 # Install dependencies
-&& echo "deb http://deb.debian.org/debian bullseye-backports main contrib non-free" > /etc/apt/sources.list.d/backports.list && \
-    apt-get update && apt-get upgrade -y -t bullseye-security && \
-    apt-get upgrade -y -t bullseye-backports && \
+&&  apt-get update && apt-get upgrade -y -t bullseye-security && \
+    apt-get upgrade -y && \
     apt-get install -y \
       freerdp2-dev \
       ghostscript \
