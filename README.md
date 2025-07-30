@@ -447,7 +447,7 @@ Currently the available extensions are:
 
 * display-statistics - [Display graphics statistics at the bottom of the cielnt screen for remote desktop sessions (remote desktop fps, server fps, cleint fps, dropped frames)](https://GitHub.com/apache/guacamole-client/pull/681)
 
-* [1.6.0 only] auth-restrict - [1.6.0 Extension, documentation available on Github](https://github.com/apache/guacamole-manual/blob/main/src/auth-restrict.md). Allows the admin to restrict when a user is allowed to connect, and when a connection is available to an user.
+* [1.6.0] auth-restrict - [Advanced login and connection restrictions](https://guacamole.apache.org/doc/gug/auth-restrict.html). Allows the admin to restrict when a user is allowed to connect, and when a connection is available to an user.
 
 You should only enable the extensions you require, if an extensions is not configured correctly in the `guacamole.properties` file it may prevent the system from loading. See the [official documentation](https://guacamole.apache.org/doc/gug/) for more details.
 
