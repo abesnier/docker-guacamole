@@ -328,7 +328,7 @@ Oh, and by the way, updated to s6 overlay 3.1.1.1
 
 `github-pg17` , Guacamole **1.6.0** (server built from [Github](https://github.com/apache/guacamole-server), client downloaded from [official website](https://guacamole.apache.org/releases/), based on [latest available Tomcat 9.0.* (Ubuntu Jammy, Temurin OpenJDK JRE)](https://hub.docker.com/_/tomcat/tags) base image at time of build, PostgreSQL **17**, [latest PostgreSQL JDBC Driver available](https://jdbc.postgresql.org/) at time of build, [latest S6 Overlay available](https://github.com/just-containers/s6-overlay/releases) at time of build
 
-** Note: the github images are also avaible in a *-noble varaitn, based on Ubunut Noble instead of Jammy, to be able to use FreeRDP 3 instead of FreeRDP 2. **
+** Note: the github images are also available in a *-noble variant, based on Ubuntu Noble instead of Jammy, to be able to use FreeRDP 3 instead of FreeRDP 2. **
 
 ## Stale/unmaintained tags
 
