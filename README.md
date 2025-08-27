@@ -19,6 +19,8 @@ Alpine | N/A | guacamole:1.6.0-alpine | guacamole:1.6.0-alpine-pg15 | guacamole:
 Built from Github | guacamole:github <br> guacamole:github-pg13 | guacamole:github-pg14 | guacamole:github-pg15 | guacamole:github-pg16 | guacamole:github-pg17
 
 # What's new / Changelog
+**2025-08-25** - Updated to Tomcat 9.0.108
+
 **2025-07-23** - Remove the bullseye-backports from the bullseye's images, because the repos do not exist anymore. I may remove this image altogether...
 
 **2025-07-15** - Finally took the time to update this README with the proper tags for 1.6.0...
