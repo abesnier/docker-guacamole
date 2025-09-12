@@ -1,3 +1,5 @@
 # These are supported funding model platforms
-
-custom: https://paypal.me/antoinebesnier
+github: abesnier
+custom:
+  - https://donate.apache.org/
+  - https://paypal.me/antoinebesnier/
