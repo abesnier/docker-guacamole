@@ -11,7 +11,7 @@ ENV CATALINA_HOME=/opt/tomcat \
     GUAC_DOWN_PATH=https://dlcdn.apache.org/guacamole \
     GUAC_VER=1.5.5 \
     GUAC_VER_PATH=1.5.5 \
-    TOMCAT_VER=9.0.109
+    TOMCAT_VER=9.0.110
 
 RUN set -xe && \
     apk add --update --no-cache \
@@ -45,7 +45,7 @@ RUN set -xe && \
     tar -xzvf libtelnet-0.23.tar.gz && \
     cd libtelnet-0.23 && \
     ./configure && \
-    make && \
+    make -j$(getconf _NPROCESSORS_ONLN) && \
     make install && \
     cd /tmp && \ 
     wget --no-check-certificate https://github.com/just-containers/s6-overlay/releases/download/v${S6OVERLAY_VER}/s6-overlay-noarch.tar.xz && \
