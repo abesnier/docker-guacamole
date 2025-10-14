@@ -24,6 +24,8 @@ Alpine | N/A | guacamole:1.6.0-alpine | guacamole:1.6.0-alpine-pg15 | guacamole:
 Built from Github | guacamole:github <br> guacamole:github-pg13 | guacamole:github-pg14 | guacamole:github-pg15 | guacamole:github-pg16 | guacamole:github-pg17
 
 # What's new / Changelog
+**2025-10-14** - Updated to Tomcat 9.0.111
+
 **2025-10-08** - Updated to Tomcat 9.0.110
 
 **2025-09-22** - Updated to PostgreSQL JDBC 42.7.8
