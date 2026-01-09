@@ -1,0 +1,223 @@
+group "bases" {
+  targets = ["github-base","github-base-noble","alpine-base","ubuntu-base","alpine-base14"]
+#  targets = ["alpine-base"]
+#  targets = ["github-base"]
+}
+
+group "all" {
+#  targets = ["github"]
+#  targets = ["ubuntu","github"]
+  targets = ["ubuntu","alpine","github","github-noble"]
+}
+
+group "ubuntu" { 
+  targets = ["ubuntu-pg13","ubuntu-pg14","ubuntu-pg15","ubuntu-pg16","ubuntu-pg17"]
+}
+
+group "github" { 
+#  targets = ["github-pg17"]
+  targets = ["github-pg13","github-pg14","github-pg15","github-pg16","github-pg17","github-pg13-noble","github-pg14-noble","github-pg15-noble","github-pg16-noble","github-pg17-noble"]
+}
+
+group "github-noble" { 
+#  targets = ["github-pg17"]
+  targets = ["github-pg13-noble","github-pg14-noble","github-pg15-noble","github-pg16-noble","github-pg17-noble"]
+}
+
+group "alpine" { 
+#  targets = ["alpine-pg15","alpine-pg16","alpine-pg17"]
+  targets = ["alpine-pg14","alpine-pg15","alpine-pg16","alpine-pg17"]
+#  targets = ["alpine-pg14"]
+}
+
+target "ubuntu-base" { 
+  dockerfile = "Dockerfile.ubuntu.base" 
+  platforms = ["linux/amd64", "linux/arm64"]
+  tags = ["abesnier/guacamole:ubuntu-base"]
+}
+
+target "ubuntu-pg13" { 
+  dockerfile = "Dockerfile.ubuntugithub.pg" 
+  platforms = ["linux/amd64", "linux/arm64"]
+  args = { PG_VERSION = "13" , BASE = "ubuntu-base" }
+  contexts = {ubuntu-base = "target:ubuntu-base"}
+  tags = ["abesnier/guacamole:1.5.5", "abesnier/guacamole:latest"]
+}
+
+target "ubuntu-pg14" { 
+  dockerfile = "Dockerfile.ubuntugithub.pg" 
+  platforms = ["linux/amd64", "linux/arm64"]
+  args = { PG_VERSION = "14" , BASE = "ubuntu-base" }
+  contexts = {ubuntu-base = "target:ubuntu-base"}
+  tags = ["abesnier/guacamole:1.5.5-pg14", "abesnier/guacamole:latest-pg14"]
+}
+
+target "ubuntu-pg15" { 
+  dockerfile = "Dockerfile.ubuntugithub.pg" 
+  platforms = ["linux/amd64", "linux/arm64"]
+  args = { PG_VERSION = "15" , BASE = "ubuntu-base" }
+  contexts = {ubuntu-base = "target:ubuntu-base"}
+  tags = ["abesnier/guacamole:1.5.5-pg15", "abesnier/guacamole:latest-pg15"]
+}
+
+target "ubuntu-pg16" { 
+  dockerfile = "Dockerfile.ubuntugithub.pg" 
+  platforms = ["linux/amd64", "linux/arm64"]
+  args = { PG_VERSION = "16" , BASE = "ubuntu-base" }
+  contexts = {ubuntu-base = "target:ubuntu-base"}
+  tags = ["abesnier/guacamole:1.5.5-pg16", "abesnier/guacamole:latest-pg16"]
+}
+
+target "ubuntu-pg17" { 
+  dockerfile = "Dockerfile.ubuntugithub.pg" 
+  platforms = ["linux/amd64", "linux/arm64"] 
+  args = { PG_VERSION = "17" , BASE = "ubuntu-base" }
+  contexts = {ubuntu-base = "target:ubuntu-base"}
+  tags = ["abesnier/guacamole:1.5.5-pg17", "abesnier/guacamole:latest-pg17"]
+}
+
+target "bullseye" { 
+  dockerfile = "Dockerfile.bullseye" 
+  platforms = ["linux/amd64", "linux/arm64"]
+  tags = ["abesnier/guacamole:1.5.5-bullseye"]
+}
+
+target "alpine-base" { 
+  dockerfile = "Dockerfile.alpine.base" 
+  platforms = ["linux/amd64", "linux/arm64", "linux/arm/v7"]
+  args = { BASE = "edge" }
+  tags = ["abesnier/guacamole:alpine-base"]
+}
+
+target "alpine-base14" { 
+  dockerfile = "Dockerfile.alpine.base"
+  args = { BASE = "3.20" }
+  platforms = ["linux/amd64", "linux/arm64", "linux/arm/v7"]
+  tags = ["abesnier/guacamole:alpine-base14"]
+}
+
+target "alpine-pg14" { 
+  dockerfile = "Dockerfile.alpine.pg14" 
+  platforms = ["linux/amd64", "linux/arm64", "linux/arm/v7"]
+  args = { PG_VERSION = "14" }
+  contexts = {alpine-base = "target:alpine-base14"}
+  tags = ["abesnier/guacamole:1.5.5-alpine","abesnier/guacamole:1.5.5-alpine-pg14","abesnier/guacamole:alpine","abesnier/guacamole:alpine-pg14"]
+}
+
+target "alpine-pg15" { 
+  dockerfile = "Dockerfile.alpine.pg" 
+  platforms = ["linux/amd64", "linux/arm64", "linux/arm/v7"]
+  args = { PG_VERSION = "15" }
+  contexts = {alpine-base = "target:alpine-base"}
+  tags = ["abesnier/guacamole:1.5.5-alpine-pg15","abesnier/guacamole:alpine-pg15"]
+}
+
+target "alpine-pg16" { 
+  dockerfile = "Dockerfile.alpine.pg" 
+  platforms = ["linux/amd64", "linux/arm64", "linux/arm/v7"]
+  args = { PG_VERSION = "16" }
+  contexts = {alpine-base = "target:alpine-base"}
+  tags = ["abesnier/guacamole:1.5.5-alpine-pg16","abesnier/guacamole:alpine-pg16"]
+}
+
+target "alpine-pg17" { 
+  dockerfile = "Dockerfile.alpine.pg" 
+  platforms = ["linux/amd64", "linux/arm64", "linux/arm/v7"] 
+  args = { PG_VERSION = "17" }
+  contexts = {alpine-base = "target:alpine-base"}
+  tags = ["abesnier/guacamole:1.5.5-alpine-pg17","abesnier/guacamole:alpine-pg17"]
+}
+
+target "github-base" { 
+  dockerfile = "Dockerfile.github.base" 
+  platforms = ["linux/amd64", "linux/arm64"]
+  tags = ["abesnier/guacamole:github-base"]
+}
+
+target "github-pg13" { 
+  dockerfile = "Dockerfile.ubuntugithub.pg"  
+  platforms = ["linux/amd64", "linux/arm64"]
+  args = { PG_VERSION = "13" , BASE = "github-base" }
+  contexts = {github-base = "target:github-base"}
+  tags = ["abesnier/guacamole:github", "abesnier/guacamole:github-pg13"]
+}
+
+target "github-pg14" { 
+  dockerfile = "Dockerfile.ubuntugithub.pg" 
+  platforms = ["linux/amd64", "linux/arm64"]
+  args = { PG_VERSION = "14" , BASE = "github-base" }
+  contexts = {github-base = "target:github-base"}
+  tags = ["abesnier/guacamole:github-pg14"]
+}
+
+target "github-pg15" { 
+  dockerfile = "Dockerfile.ubuntugithub.pg" 
+  platforms = ["linux/amd64", "linux/arm64"]
+  args = { PG_VERSION = "15" , BASE = "github-base" }
+  contexts = {github-base = "target:github-base"}
+  tags = ["abesnier/guacamole:github-pg15"]
+}
+
+target "github-pg16" { 
+  dockerfile = "Dockerfile.ubuntugithub.pg" 
+  platforms = ["linux/amd64", "linux/arm64"]
+  args = { PG_VERSION = "16" , BASE = "github-base" }
+  contexts = {github-base = "target:github-base"}
+  tags = ["abesnier/guacamole:github-pg16"]
+}
+
+target "github-pg17" { 
+  dockerfile = "Dockerfile.ubuntugithub.pg" 
+  platforms = ["linux/amd64", "linux/arm64"]
+  args = { PG_VERSION = "17" , BASE = "github-base" }
+  contexts = {github-base = "target:github-base"}
+  tags = ["abesnier/guacamole:github-pg17"]
+}
+
+
+
+target "github-base-noble" { 
+  dockerfile = "Dockerfile.github.base.noble" 
+  platforms = ["linux/amd64", "linux/arm64"]
+  tags = ["abesnier/guacamole:github-base-noble"]
+}
+
+target "github-pg13-noble" { 
+  dockerfile = "Dockerfile.ubuntugithub.pg"  
+  platforms = ["linux/amd64", "linux/arm64"]
+  args = { PG_VERSION = "13" , BASE = "github-base-noble" }
+  contexts = {github-base-noble = "target:github-base-noble"}
+  tags = ["abesnier/guacamole:github-noble", "abesnier/guacamole:github-pg13-noble"]
+}
+
+target "github-pg14-noble" { 
+  dockerfile = "Dockerfile.ubuntugithub.pg" 
+  platforms = ["linux/amd64", "linux/arm64"]
+  args = { PG_VERSION = "14" , BASE = "github-base-noble" }
+  contexts = {github-base-noble = "target:github-base-noble"}
+  tags = ["abesnier/guacamole:github-pg14-noble"]
+}
+
+target "github-pg15-noble" { 
+  dockerfile = "Dockerfile.ubuntugithub.pg" 
+  platforms = ["linux/amd64", "linux/arm64"]
+  args = { PG_VERSION = "15" , BASE = "github-base-noble" }
+  contexts = {github-base-noble = "target:github-base-noble"}
+  tags = ["abesnier/guacamole:github-pg15-noble"]
+}
+
+target "github-pg16-noble" { 
+  dockerfile = "Dockerfile.ubuntugithub.pg" 
+  platforms = ["linux/amd64", "linux/arm64"]
+  args = { PG_VERSION = "16" , BASE = "github-base-noble" }
+  contexts = {github-base-noble = "target:github-base-noble"}
+  tags = ["abesnier/guacamole:github-pg16-noble"]
+}
+
+target "github-pg17-noble" { 
+  dockerfile = "Dockerfile.ubuntugithub.pg" 
+  platforms = ["linux/amd64", "linux/arm64"]
+  args = { PG_VERSION = "17" , BASE = "github-base-noble" }
+  contexts = {github-base-noble = "target:github-base-noble"}
+  tags = ["abesnier/guacamole:github-pg17-noble"]
+}

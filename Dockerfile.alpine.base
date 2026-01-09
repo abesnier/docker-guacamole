@@ -11,7 +11,7 @@ ENV CATALINA_HOME=/opt/tomcat \
     GUAC_DOWN_PATH=https://dlcdn.apache.org/guacamole \
     GUAC_VER=1.5.5 \
     GUAC_VER_PATH=1.5.5 \
-    TOMCAT_VER=9.0.111
+    TOMCAT_VER=9.0.113
 
 RUN set -xe && \
     apk add --update --no-cache \

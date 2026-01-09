@@ -14,4 +14,3 @@ services:
             - "/my/guacamole/config:/config"
         ports:
             - "8080:8080"
-
