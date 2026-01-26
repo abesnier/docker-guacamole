@@ -7,11 +7,11 @@ ENV CATALINA_HOME=/opt/tomcat \
     POSTGRES_USER=guacamole \
     POSTGRES_DB=guacamole_db \
     POSTGREJDBC_VER=42.7.8 \
-    S6OVERLAY_VER=3.2.1.0 \
+    S6OVERLAY_VER=3.2.2.0 \
     GUAC_DOWN_PATH=https://dlcdn.apache.org/guacamole \
     GUAC_VER=1.5.5 \
     GUAC_VER_PATH=1.5.5 \
-    TOMCAT_VER=9.0.113
+    TOMCAT_VER=9.0.115
 
 RUN set -xe && \
     apk add --update --no-cache \

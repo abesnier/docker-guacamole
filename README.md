@@ -24,6 +24,7 @@ Alpine | N/A | guacamole:1.6.0-alpine | guacamole:1.6.0-alpine-pg15 | guacamole:
 Built from Github | guacamole:github <br> guacamole:github-pg13 | guacamole:github-pg14 | guacamole:github-pg15 | guacamole:github-pg16 | guacamole:github-pg17
 
 # What's new / Changelog
+**2026-01-26** - UYpdated to Tomcat 9.0.115 and S6 3.2.2.0
 **2026-01-09** - Happy new Year! Images had been updated to Tomcat 9.0.113 a while back, but I forgot to update this README...
 Github images have not been updated in a while, as there is a build error. That's a shame, as Guacamole's repo has been updated to 1.6.1. I'll keep trying and keep you posted!
 
