@@ -2,7 +2,6 @@
 [![Docker Stars](https://img.shields.io/docker/stars/abesnier/guacamole.svg?logo=docker)](https://hub.docker.com/r/abesnier/guacamole/)
 [![GitHub Issues](https://img.shields.io/github/issues-raw/abesnier/docker-guacamole.svg)](https://github.com/abesnier/docker-guacamole/issues)
 
-
 **If you decide to try the new images, make sure to delete the previous extensions. Go to the `config/guacamole/extensions` directory, and delete the files that contain 1.4.0 in their names (**`rm *1.4.0*.jar`**). Having multiple versions of the same extension will create issues. You can similarly clean the `extensions-available`.**
 
 **This is a fork of oznu/docker-guacamole, updated to tomcat 9.0.&ast; (guacamole is not compatible with tomcat10), postgresql 13/14/15/16/17 (see below), guacamole 1.6.0, and s6_overlay 3.2.**
@@ -11,23 +10,24 @@
 
 **Every month, inactive images on Docker Hub will be removed. If you use one of those, you'll need to update to a newer image.**  If you need to keep a specific image, please raise an [Issue](https://GitHub.com/abesnier/docker-guacamole/issues), so I can track it.
 
-
 # Summary of images
-Base OS | PostgreSQL 13 | PostgreSQL 14 | PostgreSQL 15 | PostgreSQL 16 | PostgreSQL 17
----|---|---|---|---|---
-Bullseye | guacamole:1.5.5-bullseye | N/A | N/A | N/A | N/A
-Bullseye | guacamole:1.6.0-bullseye | N/A | N/A | N/A | N/A
-Ubuntu | guacamole:1.5.5 | guacamole:1.5.5-pg14 | guacamole:1.5.5-pg15 | guacamole:1.5.5-pg16 | guacamole:1.5.5-pg17 
-Alpine | N/A | guacamole:1.5.5-alpine | guacamole:1.5.5-alpine-pg15 | guacamole:1.5.5-alpine-pg16 | guacamole:1.5.5-alpine-pg17
-Ubuntu | guacamole:1.6.0 <br> guacamole:latest | guacamole:1.6.0-pg14 <br> guacamole:latest-pg14 | guacamole:1.6.0-pg15 <br> guacamole:latest-pg15 | guacamole:1.6.0-pg16 <br> guacamole:latest-pg16 | guacamole:1.6.0-pg17 <br> guacamole:latest-pg17
-Alpine | N/A | guacamole:1.6.0-alpine | guacamole:1.6.0-alpine-pg15 | guacamole:1.6.0-alpine-pg16 | guacamole:1.6.0-alpine-pg17
-Built from Github | guacamole:github <br> guacamole:github-pg13 | guacamole:github-pg14 | guacamole:github-pg15 | guacamole:github-pg16 | guacamole:github-pg17
+
+| Base OS | PostgreSQL 13 | PostgreSQL 14 | PostgreSQL 15 | PostgreSQL 16 | PostgreSQL 17 |
+| --- | --- | --- | --- | --- | --- |
+| Bullseye | guacamole:1.5.5-bullseye | N/A | N/A | N/A | N/A |
+| Bullseye | guacamole:1.6.0-bullseye | N/A | N/A | N/A | N/A |
+| Ubuntu | guacamole:1.5.5 | guacamole:1.5.5-pg14 | guacamole:1.5.5-pg15 | guacamole:1.5.5-pg16 | guacamole:1.5.5-pg17 |
+| Alpine | N/A | guacamole:1.5.5-alpine | guacamole:1.5.5-alpine-pg15 | guacamole:1.5.5-alpine-pg16 | guacamole:1.5.5-alpine-pg17 |
+| Ubuntu | guacamole:1.6.0 <br> guacamole:latest | guacamole:1.6.0-pg14 <br> guacamole:latest-pg14 | guacamole:1.6.0-pg15 <br> guacamole:latest-pg15 | guacamole:1.6.0-pg16 <br> guacamole:latest-pg16 | guacamole:1.6.0-pg17 <br> guacamole:latest-pg17 |
+| Alpine | N/A | guacamole:1.6.0-alpine | guacamole:1.6.0-alpine-pg15 | guacamole:1.6.0-alpine-pg16 | guacamole:1.6.0-alpine-pg17 |
+| Built from Github | guacamole:github <br> guacamole:github-pg13 | guacamole:github-pg14 | guacamole:github-pg15 | guacamole:github-pg16 | guacamole:github-pg17 |
 
 # What's new / Changelog
+
 **2026-01-26** - UYpdated to Tomcat 9.0.115 and S6 3.2.2.0
+
 **2026-01-09** - Happy new Year! Images had been updated to Tomcat 9.0.113 a while back, but I forgot to update this README...
 Github images have not been updated in a while, as there is a build error. That's a shame, as Guacamole's repo has been updated to 1.6.1. I'll keep trying and keep you posted!
-
 
 **2025-10-14** - Updated to Tomcat 9.0.111
 
@@ -172,7 +172,7 @@ Github images have not been updated in a while, as there is a build error. That'
 
 **2023-03-19** - Updated to PostgreSQL JDBC 42.6.0
 
-**2023-03-07** - Added a paragraph in the [Something's not working](https://GitHub.com/abesnier/docker-guacamole#somethings-not-working-what-to-do) section, to explain how to use the new history recording extension. Thank you [lfac76](https://GitHub.com/abesnier/docker-guacamole/issues/11) for the suggestion. 
+**2023-03-07** - Added a paragraph in the [Something's not working](https://GitHub.com/abesnier/docker-guacamole#somethings-not-working-what-to-do) section, to explain how to use the new history recording extension. Thank you [lfac76](https://GitHub.com/abesnier/docker-guacamole/issues/11) for the suggestion.
 
 **2023-03-06** - Updated to Tomcat 9.0.73
 
@@ -186,11 +186,11 @@ Github images have not been updated in a while, as there is a build error. That'
 
 **2023-02-13** - PostgreSQL JDBC 42.5.3 is still available for download, but is not visible from the download page, so I'll assume there is a regression, and decided to downgrade to 42.5.2.
 
-**2023-02-06** - Updated to PostgreSQL JDBC 42.5.3. 
+**2023-02-06** - Updated to PostgreSQL JDBC 42.5.3.
 
 **2023-02-01** - Updated to PostgreSQL JDBC 42.5.2.
 
-Images are now built with the `--provenance=false` flag, to mitigate issue with manifests and WatchTower (thanks to the users referencing my image in WatchTower by the way!). See [here](https://GitHub.com/containrrr/watchtower/discussions/1529) for details.
+Images are now built with the `--provenance=false` flag, to mitigate issue with manifests and WatchTower (thanks to the users referencing my image in WatchTower by the way!). See [WatchTower's issue](https://GitHub.com/containrrr/watchtower/discussions/1529) for details.
 
 **2023-01-23** - Updated to S6 Overlay 3.1.3.0
 
@@ -200,7 +200,7 @@ Images are now built with the `--provenance=false` flag, to mitigate issue with 
 
 The value is set by default to `info`. The valid values are `error`, `warn`, `info`, `debug` and `trace`. See the [Official documentation](https://guacamole.apache.org/doc/gug/configuring-guacamole.html?logging-within-the-web-application#logging-within-the-web-application) for more details.
 
-The variable can be set either by adding `-e GUACD_LOG_LEVEL=debug` to your `docker run` command, or in the environment section of your `docker-compose.yml` file. 
+The variable can be set either by adding `-e GUACD_LOG_LEVEL=debug` to your `docker run` command, or in the environment section of your `docker-compose.yml` file.
 
 **2022-12-08** - Updated to Tomcat 9.0.70
 
@@ -208,7 +208,7 @@ The variable can be set either by adding `-e GUACD_LOG_LEVEL=debug` to your `doc
 
 **2022-11-16** - Updated to Tomcat 9.0.69
 
-**2022-11-09** - Added support for arm/v7 and ppc64el for supported images (both for `alpine` and `latest-pg14`, ppc64el only for `latest`, and nothing new for `bullseye`). 
+**2022-11-09** - Added support for arm/v7 and ppc64el for supported images (both for `alpine` and `latest-pg14`, ppc64el only for `latest`, and nothing new for `bullseye`).
 
 **2020-10-21** - Created a new image, `alpine`. The idea was to have a smaller image. It is about 40% smaller than the `latest` image.
 
@@ -240,7 +240,7 @@ Replacement from 1.4.0-bullseye to 1.4.0 is one-to-one, and works without disrup
 
 The idea of this extension is to show that even a docker image can use the branding possibilities of Guacamole. If you have an existing branding extension, you can just drop it in the `config/guacamole/extensions` directory and restart the container.
 
-**2022-08-05** - All tags reverted to PostgresJDBC 42.4.0, as it appears images cannot start properly with 42.4.1. I need to investigate why, but I noticed an fatal error during some random testing: 
+**2022-08-05** - All tags reverted to PostgresJDBC 42.4.0, as it appears images cannot start properly with 42.4.1. I need to investigate why, but I noticed an fatal error during some random testing:
 
 `### Error querying database. Cause: java.sql.SQLException: Error setting driver on UnpooledDataSource. Cause: java.lang.ClassNotFoundException: org.postgresql.Driver`
 
@@ -256,7 +256,6 @@ I don't like that, as I am used to using Debian, and learnt not to mix repositor
 
 So, I have created a new tag "latest-pg14" in order to test the upgrade process. And it is surprisingly easy. Please have a look at the [upgrade instructions](https://GitHub.com/abesnier/docker-guacamole/blob/master/UPGRADE.md) for details, should you chose to upgrade.
 
-
 **2022-06-30** - Well ,well, well, the base Tomcat image never ceases to amaze me! Since the last image re-build the base image has now moved to Ubuntu Jammy (22.04.4 LTS). This came with an unexpected surprise: OpenSSL has been upgraded to 3.0.2. This might seem innocuous, but the build process of Guacamole Server failed, as it relies on deprecated methods. Source code for Guacamole has already been updated on GitHub, but not the downloadable source tarball from the official website.
 
 So, the latest tag is now built on the source code available on GitHub.
@@ -265,12 +264,11 @@ Oh, and by the way, updated to s6 overlay 3.1.1.2.
 
 **2022-06-27** - New tags are available!  The philosophy for tomcat base image (i.e. 9.0.64-jre11) is to switch from openjdk to Temurin, but unfortunately, the build process failed with this base image. 9.0.64-jre11 used to be based on Debian Bullseye, but it is now based on Ubuntu 20.04.4 LTS. So I decided to create new tags:
 
-
 * 1.4.0, latest : based on tomcat:9.0.64-jre11, which is based on Ubuntu 20.04.4 LTS
 
 * 1.4.0-bullseye, latest-bullseye : based on tomcat:9.0.64-jre11-openjdb-slim-bullseye
 
-* the *-bullseye images will work as before, and I have tested the Ubuntu-based ones as much as I could. Please report  [issues](https://GitHub.com/abesnier/docker-guacamole/issues) if any, I'll make my best to solve them as fast as possible! 
+* the *-bullseye images will work as before, and I have tested the Ubuntu-based ones as much as I could. Please report  [issues](https://GitHub.com/abesnier/docker-guacamole/issues) if any, I'll make my best to solve them as fast as possible!
 
 Oh, and by the way, updated to s6 overlay 3.1.1.1
 
@@ -348,7 +346,7 @@ Oh, and by the way, updated to s6 overlay 3.1.1.1
 
 `github-pg17` , Guacamole **1.6.0** (server built from [Github](https://github.com/apache/guacamole-server), client downloaded from [official website](https://guacamole.apache.org/releases/), based on [latest available Tomcat 9.0.* (Ubuntu Jammy, Temurin OpenJDK JRE)](https://hub.docker.com/_/tomcat/tags) base image at time of build, PostgreSQL **17**, [latest PostgreSQL JDBC Driver available](https://jdbc.postgresql.org/) at time of build, [latest S6 Overlay available](https://github.com/just-containers/s6-overlay/releases) at time of build
 
-** Note: the github images are also available in a *-noble variant, based on Ubuntu Noble instead of Jammy, to be able to use FreeRDP 3 instead of FreeRDP 2. **
+**Note: the github images are also available in a *-noble variant, based on Ubuntu Noble instead of Jammy, to be able to use FreeRDP 3 instead of FreeRDP 2.**
 
 ## Stale/unmaintained tags
 
@@ -362,46 +360,30 @@ And any other tags still found on my Docker Hub tags page...
 
 # Auto promo
 
-
 If Guacamole is useful to you, do not hesitate to support the great work of the [Apache Foundation](https://donate.apache.org/).
-
 
 On a side note, running the server I use to build these images, researching update info, maintaining the images, takes quite some time and a little money. I'll gladly accept [a coffee!](https://paypal.me/antoinebesnier)
 
-
 # Docker Guacamole
-
 
 A Docker Container for [Apache Guacamole](https://guacamole.apache.org/), a client-less remote desktop gateway. It supports standard protocols like VNC, RDP, and SSH over HTML5.
 
-
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/esgaHNRxdhY/0.jpg)](http://www.youtube.com/watch?v=esgaHNRxdhY "Video Title")
-
 
 This container runs the guacamole web client, the guacd server and a postgres database.
 
-
 ## Usage
 
-
 ```shell
-
 docker run \
-
   -p 8080:8080 \
-
   -v </path/to/config>:/config \
-
   abesnier/guacamole
-
 ```
-
 
 ## Parameters
 
-
 The parameters are split into two halves, separated by a colon, the left hand side representing the host and the right the container side.
-
 
 * `-p 8080:8080` - Binds the service to port 8080 on the Docker host, **required**
 
@@ -409,33 +391,21 @@ The parameters are split into two halves, separated by a colon, the left hand si
 
 * `-e EXTENSIONS` - See below for details.
 
-
 ## Enabling Extensions
-
 
 Extensions can be enabled using the `-e EXTENSIONS` variable. Multiple extensions can be enabled using a comma separated list without spaces.
 
-
 For example:
 
-
 ```shell
-
 docker run \
-
   -p 8080:8080 \
-
   -v </path/to/config>:/config \
-
   -e "EXTENSIONS=auth-ldap,auth-duo"
-
   abesnier/guacamole
-
 ```
 
-
 Currently the available extensions are:
-
 
 * auth-ldap - [LDAP Authentication](https://guacamole.apache.org/doc/gug/ldap-auth.html)
 
@@ -471,18 +441,13 @@ Currently the available extensions are:
 
 You should only enable the extensions you require, if an extensions is not configured correctly in the `guacamole.properties` file it may prevent the system from loading. See the [official documentation](https://guacamole.apache.org/doc/gug/) for more details.
 
-
 ## Default User
-
 
 The default username is `guacadmin` with password `guacadmin`.
 
-
 ## Windows-based Docker Hosts
 
-
 Mapped volumes behave differently when running Docker for Windows and you may encounter some issues with PostgreSQL file system permissions. To avoid these issues, and still retain your config between container upgrades and recreation, you can use the local volume driver, as shown in the `docker-compose.yml` example below. When using this setup be careful to gracefully stop the container or data may be lost.
-
 
 ```yml
 
@@ -508,15 +473,15 @@ services:
 
 See [docker-compose.yml](https://GitHub.com/abesnier/docker-guacamole/blob/master/docker-compose.yml) for more details
 
-
 ## Something's not working, what to do?
 
 ### I've updated to the Noble images, and I get POSTGRESQL errors, what's wrong?
+
 Thanks to [SirOch27](https://github.com/abesnier/docker-guacamole/issues/49) for reporting this oversight from my part.
 
 Between Jammy and Noble, the collation version of PSQL has been updated. Therefore, if you are upgrading in place, you may see such messages in your logs:
 
-```
+```shell
 2025-06-03 13:01:34.973 CEST [190] WARNING: database "guacamole_db" has a collation version mismatch
 2025-06-03 13:01:34.973 CEST [190] DETAIL: The database was created using collation version 2.35, but the operating system provides version 2.39.
 2025-06-03 13:01:34.973 CEST [190] HINT: Rebuild all objects in this database that use the default collation and run ALTER DATABASE guacamole_db REFRESH COLLATION VERSION, or build PostgreSQL with the right library version.
@@ -527,17 +492,16 @@ The fix is very easy, you can run this simple one-liner:
 
 `docker exec -it guacamole sh -c "runuser -u postgres -- psql -c 'ALTER DATABASE guacamole_db REFRESH COLLATION VERSION;'"`
 
-
-
 ### Guacamole does not show the real IP, but the docker interface one's
+
 There are multiple ways to show the real IP of the users, and it depends on your network configuration, and/or docker configuration.
 
 I have implemented Guacamole's REMOTE_IP_VALVE_ENABLED environment variable. See the [documentation](https://guacamole.apache.org/doc/gug/guacamole-docker.html#running-guacamole-behind-a-proxy)
 
 For example, [Issue #22](https://GitHub.com/abesnier/docker-guacamole/issues/22) shows you a solution to show the clients IP behind a Cloudflare tunnel.
 
+### I upgraded to a newer version of Guacamole and/or PostegreSQL, and 2FA Authentication does not work anymore
 
-### I upgraded to a newer version of Guacamole and/or PostegreSQL, and 2FA Authentication does not work anymore.
 It is possible that after some upgrades, either in the Guacamole version, or to a newer PostgreSQL version (13 to 14 or 15 or higher, after you carefully follow the [instructions here](https://GitHub.com/abesnier/docker-guacamole/blob/master/UPGRADE.md) for example), you are faced with an error message after entering your TOTP token. Guacamole will display the message "Verification failed. Please try again.".
 
 There are multiple causes to this issues I believe.
@@ -547,12 +511,11 @@ The first one was a slight oversight from my part during start-up of the contain
 If cleaning does not solve the issue, then you will have to reset the TOTP secret for at least one admin user. This can be done in a one-liner:
 `docker exec -it guacamole bash -c "psql -U guacamole guacamole_db -c \"UPDATE guacamole_user_attribute SET attribute_value='false' WHERE attribute_name = 'guac-totp-key-confirmed' and user_id = (SELECT user_id FROM guacamole_user INNER JOIN guacamole_entity ON guacamole_entity.entity_id = guacamole_user.entity_id WHERE guacamole_entity.name = 'your username');\""`
 
-Once executed, try to login with the user name you specified, and you will be prompted to register your MFA again: 
+Once executed, try to login with the user name you specified, and you will be prompted to register your MFA again:
 
 ![MFA Enrollment](https://guacamole.apache.org/doc/gug/_images/totp-enroll.png "MFA Enrollment prompt")
 
 When your admin user has recovered access, he can go tio the admin panel and reset TOTP secret for other users. This will force users to re-enroll. See [documentation here](https://guacamole.apache.org/doc/gug/totp-auth.html#reseting-totp-data).
-
 
 ### I can't find the session recordings in the History panel
 
@@ -578,89 +541,59 @@ Recordings can be found in  your Guacamole server:
 
 Note that guacamole needs to be allowed to read and write into the directory storing the recordings. Please see [this discussion](https://lists.apache.org/thread/6z4rr7jo0cbvf1hf0s6m38kxgnkp7wcf) for a good summary of the requirements.
 
-
-
 ### Underscore character is not displayed in SSH sessions
 
 There is a known bug, where, in certain conditions, the underscore character is not displayed properly. This issue appeared since Guacamole 1.3, and still exists in 1.4.
 
 Based on some investigations, it seems the issue is with the libpango library (text rendering library), that is used by Guacamole. The issue has been known for quite a few years now by the library team, but unfortunately, it does not look like a solution will ever be found, as it really appears to be quite random and difficult to reproduce.
 
-
 [![IMAGE ALT TEXT](https://GitHub.com/abesnier/docker-guacamole/raw/master/underscore.png)](https://GitHub.com/abesnier/docker-guacamole/raw/master/underscore.png|width=200px)
 
-
 Please have a look at this [JIRA issue](https://issues.apache.org/jira/browse/GUACAMOLE-1478?jql=project%20%3D%20GUACAMOLE%20AND%20text%20~%20underscore) for details.
-
 
 Now, that being said, here's what happens: by default, a new ssh connection will use the default remote machine font (most likely the default monospace font, and in most Linux distros these days, it is DejaVu or Nimbus), with a size 12.
 
 This exact configuration, in some cases will result in the underscore not being displayed.
 
-
-There are two solutions that worked for me: 
+There are two solutions that worked for me:
 
 * Change the base image for my Docker image (downgrading from Debian Bullseye to Debian Buster)
 
 * Change the font size in the connection settings
 
-
 The first solution is not good for me, as the idea of this image is to be kept up-to-date with the latest available packages.
 
-
 The second solution is easy to implement, but it must be done by the admin. Go to Guacamole > Settings > Connections > Parameters > change the font size to 14 for example > save your changes.
-
 
 ### The container fails to start properly
 
 If the docker seems to not start properly, check the logs with `docker logs <container_name>`. It may be useful to start the container with a higher debug verbosity, by using the GUACD_LOG_LEVEL environment variable. The variable can be set either by adding `-e GUACD_LOG_LEVEL=debug` to your docker run command, or in the environment section of your `docker-compose.yml` file. The log will be more verbose, and will help you pinpoint the errors.
 
-
-If you see lines like this one: `postgres: could not access the server configuration file "/config/postgres/postgresql.conf": No such file or directory`, this means that the configuration volume could not be mounted properly. 
-
+If you see lines like this one: `postgres: could not access the server configuration file "/config/postgres/postgresql.conf": No such file or directory`, this means that the configuration volume could not be mounted properly.
 
 If that is the case, make sure to start the container as root. This will force the creation of the config folder.
 
 ```shell
-
 docker run \
-
   -p 8080:8080 \
-
   -u root \
-
   -v </path/to/config>:/config \
-
   abesnier/guacamole
-
 ```
-
 
 or in docker-compose.yml:
 
-
 ```yml
-
 version: "3"
-
 services:
-
   guacamole:
-
     image: abesnier/guacamole
-
     container_name: guacamole
-
     user: root
-
     volumes:
-
       - </path/to/config>:/config
-
     ports:
-
       - 8080:8080
-
 ```
 
 ### I have tried a 1.5.1RC1 image, updated to 1.5.1, and the login page still tells me I use version 1.5.1-RC1
@@ -669,14 +602,13 @@ Yeah, I know. As Docker still sees a guacamole-brading-1.5.1.jar in the `config/
 
 The solution is simply to remove the jar file in the config directory, and restart the container.
 
-
 ### I forgot my password and have deleted the default guacadmin user, what can I do?
 
 This [issue](https://github.com/abesnier/docker-guacamole/issues/35) was raised on Github, and here are the solutions:
 
 1 - Delete the content of the config directory, and the full setup of Guacamole will be reset. You will lose all your connections, history, etc... but the default user will be re-generated.
 
-2 - Download the database schema for the default user from https://raw.githubusercontent.com/apache/guacamole-client/main/extensions/guacamole-auth-jdbc/modules/guacamole-auth-jdbc-postgresql/schema/002-create-admin-user.sql and put it in your config directory.
+2 - Download the database schema for the default user from [Postgresql JDBC](https://raw.githubusercontent.com/apache/guacamole-client/main/extensions/guacamole-auth-jdbc/modules/guacamole-auth-jdbc-postgresql/schema/002-create-admin-user.sql) and put it in your config directory.
 
 Enter the docker container (`docker exec -it guacamole bash`)
 
@@ -684,45 +616,33 @@ Execute the SQL file with command `psql -U guacamole guacamole_db -a -f 002-crea
 
 You can now logon with guacadmin/guacadmin.
 
-
 ### Back up the config folder and start again
 
 Well, I must admit, I managed to break a few things here and there nevertheless...
 
 The easiest way to correct issues is to stop the container, delete the config folder, and restart the container.
 
-
 But this has the side effect of deleting your stored users and connections as well.
-
 
 You can backup and restore the database with the following command (assuming your container is named `guacamole`):
 
-
 Backup: `docker exec -it guacamole bash -c "pg_dump -U guacamole -F t guacamole_db > guacamole_db_backup.tar"`
-
 
 This creates a `guacamole_db_backup.tar` in your `config` directory that you need to save somewhere else.
 
-
 Now stop the container, delete the config folder, and restart the container.
 
-
 To restore the database, copy the backup file in your mounted config folder, and run `docker exec -it guacamole bash -c "pg_restore -d guacamole_db guacamole_db_backup.tar -c -U guacamole"`. You can now login to Guacamole with your user data and should find your connections as you left them.
-
 
 ### Report an issue with the image
 
 Have a look at the [GitHub repo](https://GitHub.com/abesnier/docker-guacamole), and the [Issues](https://GitHub.com/abesnier/docker-guacamole/issues) page.
 
-
 ### Official support pages
 
 If you believe the issue is with Guacamole and not the docker image, have a look at the [mailing list](https://lists.apache.org/list.html?user@guacamole.apache.org) for general support, and if you believe there is a bug, use the [bug tracker](https://issues.apache.org/jira/projects/GUACAMOLE/summary) to report it.
 
-
 And of course, don't forget to look at the [official documentation](https://guacamole.apache.org/doc/gug).
-
-
 
 ## License
 
@@ -732,7 +652,7 @@ Copyright (C) 2017-2020 oznu
 
 Apache Guacamole is released under the Apache License version 2.0.
 
-Extensions uses third-party modules. To consult the licensing for each module, download the extension from https://guacamole.apache.org/releases/1.5.5/, extract it, and check the content of the `bundled` directory.
+Extensions uses third-party modules. To consult the licensing for each module, download the extension from [Guacamole's Website](https://guacamole.apache.org/releases/1.6.0/), extract it, and check the content of the `bundled` directory.
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
