@@ -4,7 +4,7 @@
 #
 # 2022-12-19 - Changelog maintained in README.md
 
-FROM library/tomcat:9.0.115-jre11-temurin-jammy
+FROM library/tomcat:10.1.52-jre11-temurin-jammy
 
 ENV GUACAMOLE_HOME=/app/guacamole \
   PGDATA=/config/postgres \
@@ -15,6 +15,14 @@ ENV GUACAMOLE_HOME=/app/guacamole \
   GUAC_DOWN_PATH=https://dlcdn.apache.org/guacamole \
   GUAC_VER=1.6.0 \
   GUAC_VER_PATH=1.6.0 
+
+RUN mkdir -p ${GUACAMOLE_HOME} \
+  ${GUACAMOLE_HOME}/lib \
+  ${GUACAMOLE_HOME}/extensions \
+  ${GUACAMOLE_HOME}/extensions-available 
+
+COPY ./guacamole-${GUAC_VER}.war ${CATALINA_HOME}/webapps/ROOT.war 
+COPY ./extensions ${GUACAMOLE_HOME}
 
 RUN set -xe && apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
       apt-transport-https  \
@@ -39,12 +47,7 @@ RUN set -xe && apt-get update && apt-get upgrade -y && apt-get install -y --no-i
     && tar -C / -Jxpf /tmp/s6-overlay-symlinks-noarch.tar.xz \
     && tar -C / -Jxpf /tmp/syslogd-overlay-noarch.tar.xz \
     && cd / && rm /tmp/*.tar.xz \
-# Create guacamole directories
-&& mkdir -p ${GUACAMOLE_HOME} \ 
-              ${GUACAMOLE_HOME}/lib \
-              ${GUACAMOLE_HOME}/extensions \
-              ${GUACAMOLE_HOME}/extensions-available \
-			  && cd ${GUACAMOLE_HOME} \
+&& cd ${GUACAMOLE_HOME} \
 # Add PostGresql repository & Install dependencies
 && curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg && \
     echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | tee  /etc/apt/sources.list.d/pgdg.list && \
@@ -72,7 +75,7 @@ RUN set -xe && apt-get update && apt-get upgrade -y && apt-get install -y --no-i
       libvorbis-dev \
       libwebp-dev \
       libwebsockets-dev \
-      make \
+      make \     
       xmlstarlet \
 # Link FreeRDP to where guac expects it to be
 && ( ln -s /usr/local/lib/freerdp /usr/lib/arm-linux-gnueabihf/freerdp ||  \
@@ -82,52 +85,45 @@ RUN set -xe && apt-get update && apt-get upgrade -y && apt-get install -y --no-i
 	 ln -s /usr/local/lib/freerdp /usr/lib/ppc64el-linux-gnu/freerdp   || \
 	 ln -s /usr/local/lib/freerdp /usr/lib/aarch64-linux-gnu/freerdp   || true ) \
 # Install guacamole-server
-  && export LDFLAGS="-lrt" \
-  && curl -SLO "${GUAC_DOWN_PATH}/${GUAC_VER_PATH}/source/guacamole-server-${GUAC_VER}.tar.gz" \
-  && tar -xzf guacamole-server-${GUAC_VER}.tar.gz \
-  && cd guacamole-server-${GUAC_VER} \
+  && mkdir /git \
+  && cd /git && git clone https://github.com/apache/guacamole-server.git --depth=1 -b next \
+  && cd guacamole-server \
   && autoreconf -fi \
   && ./configure --enable-allow-freerdp-snapshots \
-  && make -j$(getconf _NPROCESSORS_ONLN) \
+  && make -j$(getconf _NPROCESSORS_ONLN) -Wno-error=deprecated-declarations\
   && make install \
   && cd .. \
   && rm -rf guacamole-server-${GUAC_VER}.tar.gz guacamole-server-${GUAC_VER} \
   && ldconfig \
 # Install guacamole-client and postgres auth adapter
-  && set -xe \
+  && cd ${GUACAMOLE_HOME} \
   && rm -rf ${CATALINA_HOME}/webapps/ROOT \
-  && curl -SLo ${CATALINA_HOME}/webapps/ROOT.war "${GUAC_DOWN_PATH}/${GUAC_VER_PATH}/binary/guacamole-${GUAC_VER}.war" \
   && curl -SLo ${GUACAMOLE_HOME}/lib/postgresql-${POSTGREJDBC_VER}.jar "https://jdbc.postgresql.org/download/postgresql-${POSTGREJDBC_VER}.jar" \                
-  && curl -SLO "${GUAC_DOWN_PATH}/${GUAC_VER_PATH}/binary/guacamole-auth-jdbc-${GUAC_VER}.tar.gz" \
-  && tar -xzf guacamole-auth-jdbc-${GUAC_VER}.tar.gz \
+  && tar -xzf ${GUACAMOLE_HOME}/guacamole-auth-jdbc-${GUAC_VER}.tar.gz \
   && cp -R guacamole-auth-jdbc-${GUAC_VER}/postgresql/guacamole-auth-jdbc-postgresql-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions/ \
   && cp -R guacamole-auth-jdbc-${GUAC_VER}/postgresql/schema ${GUACAMOLE_HOME}/ \
   && rm -rf guacamole-auth-jdbc-${GUAC_VER} guacamole-auth-jdbc-${GUAC_VER}.tar.gz \
 # Add optional extensions
-  && for i in auth-duo auth-quickconnect auth-header auth-ldap auth-json auth-totp history-recording-storage; do \         
-    echo "${GUAC_DOWN_PATH}/${GUAC_VER}/binary/guacamole-${i}-${GUAC_VER}.tar.gz" \
-    && curl -SLO "${GUAC_DOWN_PATH}/${GUAC_VER_PATH}/binary/guacamole-${i}-${GUAC_VER}.tar.gz" \
-    && tar -xzf guacamole-${i}-${GUAC_VER}.tar.gz \
+  && for i in auth-duo auth-quickconnect auth-header auth-ldap auth-json auth-totp history-recording-storage auth-ban auth-restrict display-statistics; do \       
+    tar -xzf guacamole-${i}-${GUAC_VER}.tar.gz \
     && cp guacamole-${i}-${GUAC_VER}/guacamole-${i}-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions-available/ \
     && rm -rf guacamole-${i}-${GUAC_VER} guacamole-${i}-${GUAC_VER}.tar.gz \
   ;done \
 # Special case for SSO extension as it bundles CAS, SAML and OpenID in subfolders
 # I keep the for loop, just in case future releases of guacamole bundles other extensions...
-  && curl -SLO "${GUAC_DOWN_PATH}/${GUAC_VER_PATH}/binary/guacamole-auth-sso-${GUAC_VER}.tar.gz" \
   && tar -xzf guacamole-auth-sso-${GUAC_VER}.tar.gz \
-  && for i in cas openid saml; do \
+  && for i in cas openid saml ssl; do \
     cp guacamole-auth-sso-${GUAC_VER}/${i}/guacamole-auth-sso-${i}-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions-available/ \
   ;done \
   && rm -rf guacamole-auth-sso-${GUAC_VER} guacamole-auth-sso-${GUAC_VER}.tar.gz \
 # Special case for Vault extension. Currently supports only ksm, but it seems there are plans for future providers
 # I keep the for loop, just in case future releases of guacamole bundles other extensions...
-  && curl -SLO "${GUAC_DOWN_PATH}/${GUAC_VER_PATH}/binary/guacamole-vault-${GUAC_VER}.tar.gz" \
   && tar -xzf guacamole-vault-${GUAC_VER}.tar.gz \
   && for i in ksm; do \
     cp guacamole-vault-${GUAC_VER}/${i}/guacamole-vault-${i}-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions-available/ \
   ;done \
-  && rm -rf guacamole-vault-${GUAC_VER} guacamole-vault-${GUAC_VER}.tar.gz 
-
+  && rm -rf guacamole-vault-${GUAC_VER} guacamole-vault-${GUAC_VER}.tar.gz   
+  
 COPY ./guacamole-branding-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions
 COPY ./guacamole-branding-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions-available
 
