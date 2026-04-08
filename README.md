@@ -23,6 +23,7 @@
 | Built from Github | guacamole:github <br> guacamole:github-pg13 | guacamole:github-pg14 | guacamole:github-pg15 | guacamole:github-pg16 | guacamole:github-pg17 |
 
 # What's new / Changelog
+**2026-04-08** - Updated to Tomcat 9.0.117
 
 **2026-02-12** - Updated to PostgreSQL JDBC 42.7.9
 
