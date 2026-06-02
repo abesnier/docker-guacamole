@@ -23,6 +23,9 @@
 | Built from Github | guacamole:github <br> guacamole:github-pg13 | guacamole:github-pg14 | guacamole:github-pg15 | guacamole:github-pg16 | guacamole:github-pg17 |
 
 # What's new / Changelog
+
+**2026-06-01** - No major update, I needed to rebuild my build setup following a server upgrade. Also, I've added a custom extension, [Guacamole SSO UI](https://www.github.com/abesnier/guacamole-sso-ui), which is not activated bydefault, but still available. It's just a visual upgrade when SSO extensions (OpenID, SAML or CAS) are activated.
+
 **2026-05-12** - Updated to Tomcat 9.0.118
 
 **2026-05-11** - Updated to S6 Overlay 3.2.3.0. Fixed Github images based on Ubuntu Noble.

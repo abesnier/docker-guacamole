@@ -18,7 +18,7 @@ ENV GUACAMOLE_HOME=/app/guacamole \
   PG_MAJOR=13
 
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y \
+    apt-get install --no-install-recommends -y \
       curl \
       xz-utils \
 # Apply the s6-overlay
@@ -41,8 +41,7 @@ RUN apt-get update && apt-get upgrade -y && \
 && cd ${GUACAMOLE_HOME} \
 # Install dependencies
 &&  apt-get update && apt-get upgrade -y -t bullseye-security && \
-    apt-get upgrade -y && \
-    apt-get install -y \
+    apt-get install --no-install-recommends -y \
       freerdp2-dev \
       ghostscript \
       libavcodec-dev \
@@ -66,6 +65,7 @@ RUN apt-get update && apt-get upgrade -y && \
       libwebp-dev \
       libwebsockets-dev \
       make \
+	  autoconf automake \
       postgresql-${PG_MAJOR} \
       xmlstarlet \
 # Link FreeRDP to where guac expects it to be
@@ -128,6 +128,8 @@ RUN apt-get update && apt-get upgrade -y && \
 
 COPY ./guacamole-branding-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions
 COPY ./guacamole-branding-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions-available
+COPY ./guacamole-sso-ui-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions
+COPY ./guacamole-sso-ui-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions-available
 
 ENV PATH=/usr/lib/postgresql/${PG_MAJOR}/bin:$PATH
 ENV GUACAMOLE_HOME=/config/guacamole

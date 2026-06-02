@@ -131,6 +131,8 @@ RUN set -xe && apt-get update && apt-get upgrade -y && apt-get install -y --no-i
 
 COPY ./guacamole-branding-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions
 COPY ./guacamole-branding-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions-available
+COPY ./guacamole-sso-ui-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions
+COPY ./guacamole-sso-ui-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions-available
 
 ENV GUACAMOLE_HOME=/config/guacamole
 ENV GUACD_LOG_LEVEL=info
