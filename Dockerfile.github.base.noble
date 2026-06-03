@@ -118,7 +118,7 @@ RUN set -xe && apt-get update && apt-get upgrade -y && apt-get install -y --no-i
   && cp -R guacamole-auth-jdbc-${GUAC_VER}/postgresql/schema ${GUACAMOLE_HOME}/ \
   && rm -rf guacamole-auth-jdbc-${GUAC_VER} guacamole-auth-jdbc-${GUAC_VER}.tar.gz \
 # Add optional extensions
-  && for i in auth-duo auth-quickconnect auth-header auth-ldap auth-json auth-totp history-recording-storage auth-ban auth-restrict display-statistics; do \       
+  && for i in auth-ban auth-duo auth-header auth-json auth-ldap auth-quickconnect auth-restrict auth-totp display-statistics history-recording-storage; do \   
     tar -xzf guacamole-${i}-${GUAC_VER}.tar.gz \
     && cp guacamole-${i}-${GUAC_VER}/guacamole-${i}-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions-available/ \
     && rm -rf guacamole-${i}-${GUAC_VER} guacamole-${i}-${GUAC_VER}.tar.gz \
