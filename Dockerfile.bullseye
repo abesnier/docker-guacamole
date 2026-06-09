@@ -128,7 +128,6 @@ RUN apt-get update && apt-get upgrade -y && \
 
 COPY ./guacamole-branding-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions
 COPY ./guacamole-branding-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions-available
-COPY ./guacamole-sso-ui-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions
 COPY ./guacamole-sso-ui-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions-available
 
 ENV PATH=/usr/lib/postgresql/${PG_MAJOR}/bin:$PATH
