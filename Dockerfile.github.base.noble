@@ -4,14 +4,14 @@
 #
 # 2022-12-19 - Changelog maintained in README.md
 
-FROM library/tomcat:9.0.118-jre11-temurin-noble
+FROM library/tomcat:9.0.121-jre11-temurin-noble
 
 ENV GUACAMOLE_HOME=/app/guacamole \
   PGDATA=/config/postgres \
   POSTGRES_USER=guacamole \
   POSTGRES_DB=guacamole_db \
-  S6OVERLAY_VER=3.2.3.0 \
-  POSTGREJDBC_VER=42.7.11 \
+  S6OVERLAY_VER=3.2.3.2 \
+  POSTGREJDBC_VER=42.7.13 \
   GUAC_DOWN_PATH=https://dlcdn.apache.org/guacamole \
   GUAC_VER=1.6.1 \
   GUAC_VER_PATH=1.6.1 
@@ -80,18 +80,6 @@ RUN set -xe && apt-get update && apt-get upgrade -y && apt-get install -y --no-i
       cmake \     
       autoconf automake \ 
       xmlstarlet \
-# Install updated LibVNCServer
-&& mkdir /git \
-	&& cd /git \
-	&& git clone https://github.com/LibVNC/libvncserver.git --depth=1 -b master \
-	&& cd libvncserver \
-	&& mkdir build \
-	&& cd build \
-	&& cmake .. \
-	&& cmake --build . \
-	&& cmake --install . \
-	&& cd / \
-	&& rm -rf /git/libvncserver \
 # Link FreeRDP to where guac expects it to be
 && ( ln -s /usr/local/lib/freerdp /usr/lib/arm-linux-gnueabihf/freerdp ||  \
      ln -s /usr/local/lib/freerdp /usr/lib/arm-linux-gnueabi/freerdp   || \
@@ -100,10 +88,11 @@ RUN set -xe && apt-get update && apt-get upgrade -y && apt-get install -y --no-i
 	 ln -s /usr/local/lib/freerdp /usr/lib/ppc64el-linux-gnu/freerdp   || \
 	 ln -s /usr/local/lib/freerdp /usr/lib/aarch64-linux-gnu/freerdp   || true ) \
 # Install guacamole-server
+  && mkdir /git \
   && cd /git && git clone https://github.com/apache/guacamole-server.git --depth=1 -b main \
   && cd guacamole-server \
   && autoreconf -fi \
-  && ./configure --enable-allow-freerdp-snapshots CFLAGS="-Wno-error=deprecated-declarations"\
+  && ./configure --enable-allow-freerdp-snapshots CFLAGS="-Wno-error=deprecated-declarations -Werror=unused-but-set-variable -Werror=unused-function"\
   && make -j$(getconf _NPROCESSORS_ONLN) \
   && make install \
   && cd .. \

@@ -24,6 +24,8 @@
 
 # What's new / Changelog
 
+**2026-09-09** - **Because Bullseye has reached EOL, I will not update the images based on this version of Debian anymore.** Also Tomcat, PostgresJDBC have been updated to their latest versions.
+
 **2026-06-03** - I just realized that some extensions were not included in the 1.6.0 and 1.6.1 versions... This is now fixed in the Dockerfiles, and will be released next week, during my weekly builds.
 
 **2026-06-01** - No major update, I needed to rebuild my build setup following a server upgrade. Also, I've added a custom extension, [Guacamole SSO UI](https://www.github.com/abesnier/guacamole-sso-ui), which is not activated bydefault, but still available. It's just a visual upgrade when SSO extensions (OpenID, SAML or CAS) are activated.
