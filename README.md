@@ -14,8 +14,6 @@
 
 | Base OS | PostgreSQL 13 | PostgreSQL 14 | PostgreSQL 15 | PostgreSQL 16 | PostgreSQL 17 |
 | --- | --- | --- | --- | --- | --- |
-| Bullseye | guacamole:1.5.5-bullseye | N/A | N/A | N/A | N/A |
-| Bullseye | guacamole:1.6.0-bullseye | N/A | N/A | N/A | N/A |
 | Ubuntu | guacamole:1.5.5 | guacamole:1.5.5-pg14 | guacamole:1.5.5-pg15 | guacamole:1.5.5-pg16 | guacamole:1.5.5-pg17 |
 | Alpine | N/A | guacamole:1.5.5-alpine | guacamole:1.5.5-alpine-pg15 | guacamole:1.5.5-alpine-pg16 | guacamole:1.5.5-alpine-pg17 |
 | Ubuntu | guacamole:1.6.0 <br> guacamole:latest | guacamole:1.6.0-pg14 <br> guacamole:latest-pg14 | guacamole:1.6.0-pg15 <br> guacamole:latest-pg15 | guacamole:1.6.0-pg16 <br> guacamole:latest-pg16 | guacamole:1.6.0-pg17 <br> guacamole:latest-pg17 |
@@ -23,6 +21,8 @@
 | Built from Github | guacamole:github <br> guacamole:github-pg13 | guacamole:github-pg14 | guacamole:github-pg15 | guacamole:github-pg16 | guacamole:github-pg17 |
 
 # What's new / Changelog
+
+**2026-09-16** - Updated to Tomcat 9.0.122
 
 **2026-09-09** - **Because Bullseye has reached EOL, I will not update the images based on this version of Debian anymore.** Also Tomcat, PostgresJDBC have been updated to their latest versions.
 
