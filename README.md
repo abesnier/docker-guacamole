@@ -22,6 +22,8 @@
 
 # What's new / Changelog
 
+**2026-10-16** - Updated to Tomcat 9.0.123 and PostgreSQL JDBC 42.7.14
+
 **2026-09-16** - Updated to Tomcat 9.0.122
 
 **2026-09-09** - **Because Bullseye has reached EOL, I will not update the images based on this version of Debian anymore.** Also Tomcat, PostgresJDBC have been updated to their latest versions.

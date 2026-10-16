@@ -1,0 +1,359 @@
+# Dockerfile for guacamole, forked from oznu/docker-guacamole
+#
+# Maintained by Antoine Besnier <Contact me via Github>
+#
+# Multi-stage, multi-source merge of Dockerfile.ubuntu.base.test,
+# Dockerfile.github.base and Dockerfile.ubuntugithub.pg into one file.
+#
+# --build-arg SOURCE=ubuntu (default) builds guacd from the official Apache
+#   release tarball and downloads guacamole-client + extensions from
+#   dlcdn.apache.org, matching the old Dockerfile.ubuntu.base(.test).
+# --build-arg SOURCE=github builds guacd from the live
+#   github.com/apache/guacamole-server @ main branch, and expects
+#   ./guacamole-${GUAC_VER}.war and a flat ./extensions/*.tar.gz directory
+#   (guacamole-auth-jdbc-*, guacamole-auth-<name>-*, guacamole-auth-sso-*,
+#   guacamole-vault-*) to already exist in the build context — matching the
+#   old Dockerfile.github.base, whose separate toolchain builds those.
+#
+# Both variants funnel into the same "builder" stage (compile guacd, assemble
+# GUACAMOLE_HOME, harvest runtime deps) and the same runtime stage, so the
+# extension/version/library-harvest logic only exists once.
+#
+# Runtime stage stays a clean tomcat base with none of the build toolchain
+# (-dev packages, compilers, git, source tarballs) — see the harvest step in
+# "builder" for how it avoids guessing apt package names for guacd's runtime
+# library deps.
+#
+# UNVERIFIED: this file has not been build-tested (no Docker available in
+# this session), for EITHER SOURCE value. Build both variants, run the
+# container, and exercise RDP/VNC/SSH + postgres before trusting it. If
+# guacd fails with "error while loading shared libraries", check
+# /runtime-packages.txt in the builder's build log (the final `cat` step)
+# for anything missing or empty.
+#
+# Build arguments
+# ----------------
+#   SOURCE          ubuntu | github (default: ubuntu) — see above.
+#   GUAC_VER         Guacamole client/extensions version, e.g. 1.6.0. Always
+#                     used to name/locate client artifacts; for SOURCE=github
+#                     it does NOT pin guacd itself (that always builds from
+#                     the tip of main).
+#   TOMCAT_VER        Tomcat version, e.g. 9.0.122. Combined with UBUNTU_VER
+#                      into the base image tag for every stage.
+#   UBUNTU_VER         Ubuntu codename the base image is built on, e.g.
+#                       jammy or noble. Base image tag becomes
+#                       library/tomcat:${TOMCAT_VER}-jre11-temurin-${UBUNTU_VER}.
+#   POSTGREJDBC_VER   PostgreSQL JDBC driver version bundled into
+#                      GUACAMOLE_HOME/lib.
+#   S6OVERLAY_VER      s6-overlay version installed in the runtime stage.
+#   PG_VERSION         PostgreSQL server major version (e.g. 14, 16) to
+#                       install in the runtime stage; also sets PG_MAJOR.
+#                       No default — must be passed explicitly.
+
+ARG SOURCE=ubuntu
+ARG GUAC_VER=1.6.0
+ARG TOMCAT_VER=9.0.123
+ARG UBUNTU_VER=jammy
+ARG POSTGREJDBC_VER=42.7.14
+ARG S6OVERLAY_VER=3.2.3.2
+
+# ---------------------------------------------------------------------------
+# Stage: toolchain — build tools + -dev libs shared by both SOURCE variants
+# ---------------------------------------------------------------------------
+FROM library/tomcat:${TOMCAT_VER}-jre11-temurin-${UBUNTU_VER} AS toolchain
+
+ARG UBUNTU_VER
+ARG FREERDP_REV=2
+
+RUN set -xe && apt-get update && apt-get upgrade -y && apt-get upgrade -y -t ${UBUNTU_VER}-backports \
+  && apt-get install -y --no-install-recommends \
+  ca-certificates \
+  curl \
+  git \
+  freerdp${FREERDP_REV}-dev \
+  ghostscript \
+  libavcodec-dev \
+  libavformat-dev \
+  libavutil-dev \
+  libcairo2-dev \
+  libfreerdp-client2-2 \
+  libjpeg-dev \
+  libjpeg-turbo8-dev \
+  libossp-uuid-dev \
+  libpango1.0-dev \
+  libpng-dev \
+  libpulse-dev \
+  libssh2-1-dev \
+  libssl-dev \
+  libswscale-dev \
+  libtelnet-dev \
+  libtool-bin \
+  libvncserver-dev \
+  libvorbis-dev \
+  libwebp-dev \
+  libwebsockets-dev \
+  make \
+  cmake \
+  autoconf automake \
+  xmlstarlet \
+  # Link FreeRDP to where guac expects it to be
+  && ( ln -s /usr/local/lib/freerdp /usr/lib/arm-linux-gnueabihf/freerdp ||  \
+  ln -s /usr/local/lib/freerdp /usr/lib/arm-linux-gnueabi/freerdp   || \
+  ln -s /usr/local/lib/freerdp /usr/lib/x86_64-linux-gnu/freerdp    ||  \
+  ln -s /usr/local/lib/freerdp /usr/lib/aarch64-linux-gnu/freerdp   || \
+  ln -s /usr/local/lib/freerdp /usr/lib/ppc64el-linux-gnu/freerdp   || true )
+
+# ---------------------------------------------------------------------------
+# Stage: source-ubuntu — guacd source + client war/extensions from the
+# official Apache release (dlcdn.apache.org)
+# ---------------------------------------------------------------------------
+FROM toolchain AS source-ubuntu
+
+ARG GUAC_VER
+ENV GUAC_DOWN_PATH=https://dlcdn.apache.org/guacamole
+
+# Extras added for versions >= 1.6.0 (auth-ban, auth-restrict,
+# display-statistics; ssl sso provider) are appended conditionally.
+RUN set -xe && mkdir -p /src/client && cd /src \
+  && curl -SLO "${GUAC_DOWN_PATH}/${GUAC_VER}/source/guacamole-server-${GUAC_VER}.tar.gz" \
+  && tar -xzf guacamole-server-${GUAC_VER}.tar.gz \
+  && mv guacamole-server-${GUAC_VER} /src/guacamole-server \
+  && rm -f guacamole-server-${GUAC_VER}.tar.gz \
+  && cd /src/client \
+  && curl -SLo ROOT.war "${GUAC_DOWN_PATH}/${GUAC_VER}/binary/guacamole-${GUAC_VER}.war" \
+  && curl -SLO "${GUAC_DOWN_PATH}/${GUAC_VER}/binary/guacamole-auth-jdbc-${GUAC_VER}.tar.gz" \
+  && AUTH_EXTRAS="" \
+  && SSO_EXTRAS="" \
+  && if [ "$GUAC_VER" != "1.5.5" ]; then \
+  AUTH_EXTRAS="auth-ban auth-restrict display-statistics"; \
+  SSO_EXTRAS="ssl"; \
+  fi \
+  && for i in auth-duo auth-header auth-json auth-ldap auth-quickconnect auth-totp history-recording-storage $AUTH_EXTRAS; do \
+  curl -SLO "${GUAC_DOWN_PATH}/${GUAC_VER}/binary/guacamole-${i}-${GUAC_VER}.tar.gz"; \
+  done \
+  && echo "auth-duo auth-header auth-json auth-ldap auth-quickconnect auth-totp history-recording-storage $AUTH_EXTRAS" > extensions.txt \
+  && curl -SLO "${GUAC_DOWN_PATH}/${GUAC_VER}/binary/guacamole-auth-sso-${GUAC_VER}.tar.gz" \
+  && echo "cas openid saml $SSO_EXTRAS" > sso-extras.txt \
+  && curl -SLO "${GUAC_DOWN_PATH}/${GUAC_VER}/binary/guacamole-vault-${GUAC_VER}.tar.gz"
+
+# ---------------------------------------------------------------------------
+# Stage: source-github — guacd built from github.com/apache/guacamole-server
+# @ main, using client war/extensions pre-built by your own toolchain
+# ---------------------------------------------------------------------------
+FROM toolchain AS source-github
+
+ARG GUAC_VER
+
+# guacd is always built from the tip of main here, independent of GUAC_VER;
+# GUAC_VER only names the pre-built client artifacts below.
+RUN set -xe && mkdir -p /git /src/client \
+  && cd /git && git clone https://github.com/apache/guacamole-server.git --depth=1 -b main \
+  && mv /git/guacamole-server /src/guacamole-server \
+  && rm -rf /git \
+  # This variant always targets the current 1.6.x extension set - it tracks
+  # guacamole-server's main branch, which is always ahead of the last
+  # released ubuntu/source-ubuntu variant.
+  && echo "auth-ban auth-duo auth-header auth-json auth-ldap auth-quickconnect auth-restrict auth-totp display-statistics" > /src/client/extensions.txt \
+  && echo "cas openid saml ssl" > /src/client/sso-extras.txt
+
+# Pre-built by your separate toolchain: ./guacamole-${GUAC_VER}.war and a
+# flat ./extensions/*.tar.gz directory (guacamole-auth-jdbc-*,
+# guacamole-auth-<name>-*, guacamole-auth-sso-*, guacamole-vault-*).
+COPY ./guacamole-${GUAC_VER}.war /src/client/ROOT.war
+COPY ./extensions/ /src/client/
+
+# ---------------------------------------------------------------------------
+# Stage: builder — compiles guacd and assembles GUACAMOLE_HOME, whichever
+# source variant was selected above
+# ---------------------------------------------------------------------------
+FROM source-${SOURCE} AS builder
+
+ARG SOURCE
+ARG GUAC_VER
+ARG POSTGREJDBC_VER
+ARG BUILDARCH
+ARG TARGETARCH
+
+ENV GUACAMOLE_HOME=/app/guacamole \
+  POSTGREJDBC_VER=${POSTGREJDBC_VER}
+
+RUN set -xe \
+  && mkdir -p ${GUACAMOLE_HOME} ${GUACAMOLE_HOME}/lib ${GUACAMOLE_HOME}/extensions ${GUACAMOLE_HOME}/extensions-available \
+  # Build guacd. -Wno-error=deprecated-declarations is only needed against
+  # the live main branch (source-github), which can run ahead of the -dev
+  # library versions jammy ships and trip deprecation warnings-as-errors
+  # that a tagged release wouldn't.
+  && cd /src/guacamole-server \
+  && autoreconf -fi \
+  && CEXTRAFLAGS=""\
+  #  && if [ "$SOURCE" = "github" ]; then CEXTRAFLAGS=""; fi \
+  && if [ "$SOURCE" = "github" ]; then CEXTRAFLAGS="-Werror=unused-but-set-variable -Wno-error=deprecated-declarations -Werror=unused-function"; fi \		
+  && ./configure --enable-allow-freerdp-snapshots CFLAGS="-g -O2 $CEXTRAFLAGS"\
+  || { tail -n 80 config.log; exit 1; } \
+  # Parallel make under QEMU user-mode emulation (cross-arch build) is a known
+  # segfault trigger, so only go wide when building natively.
+  && JOBS=$(getconf _NPROCESSORS_ONLN) \
+  && if [ "$BUILDARCH" != "$TARGETARCH" ]; then JOBS=2; fi \
+  && make -j${JOBS} \
+  && make install \
+  # configure only warns (and silently skips RDP) when FreeRDP isn't found
+  && test -f /usr/local/lib/libguac-client-rdp.so \
+  && cd / && rm -rf /src/guacamole-server \
+  && ldconfig \
+  # Install guacamole-client webapp + jdbc driver
+  && rm -rf ${CATALINA_HOME}/webapps/ROOT \
+  && cp /src/client/ROOT.war ${CATALINA_HOME}/webapps/ROOT.war \
+  && curl -SLo ${GUACAMOLE_HOME}/lib/postgresql-${POSTGREJDBC_VER}.jar "https://jdbc.postgresql.org/download/postgresql-${POSTGREJDBC_VER}.jar" \
+  && cd /src/client \
+  && tar -xzf guacamole-auth-jdbc-${GUAC_VER}.tar.gz \
+  && cp -R guacamole-auth-jdbc-${GUAC_VER}/postgresql/guacamole-auth-jdbc-postgresql-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions/ \
+  && cp -R guacamole-auth-jdbc-${GUAC_VER}/postgresql/schema ${GUACAMOLE_HOME}/ \
+  && rm -rf guacamole-auth-jdbc-${GUAC_VER} guacamole-auth-jdbc-${GUAC_VER}.tar.gz \
+  # Simple extensions - the exact set was decided per SOURCE/GUAC_VER above
+  # and handed over via extensions.txt, so this loop doesn't need to know it.
+  && for i in $(cat extensions.txt); do \
+  tar -xzf guacamole-${i}-${GUAC_VER}.tar.gz \
+  && cp guacamole-${i}-${GUAC_VER}/guacamole-${i}-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions-available/ \
+  && rm -rf guacamole-${i}-${GUAC_VER} guacamole-${i}-${GUAC_VER}.tar.gz; \
+  done \
+  # Special case for SSO extension as it bundles CAS, SAML and OpenID (and
+  # SSL, on 1.6.x+) in subfolders
+  && tar -xzf guacamole-auth-sso-${GUAC_VER}.tar.gz \
+  && for i in $(cat sso-extras.txt); do \
+  cp guacamole-auth-sso-${GUAC_VER}/${i}/guacamole-auth-sso-${i}-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions-available/; \
+  done \
+  && rm -rf guacamole-auth-sso-${GUAC_VER} guacamole-auth-sso-${GUAC_VER}.tar.gz \
+  # Special case for Vault extension. Currently supports only ksm, but keep
+  # the for loop in case future releases bundle other providers...
+  && tar -xzf guacamole-vault-${GUAC_VER}.tar.gz \
+  && for i in ksm; do \
+  cp guacamole-vault-${GUAC_VER}/${i}/guacamole-vault-${i}-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions-available/; \
+  done \
+  && rm -rf guacamole-vault-${GUAC_VER} guacamole-vault-${GUAC_VER}.tar.gz \
+  && cd / && rm -rf /src/client \
+  # guacd's own build output (the binary plus the FreeRDP/guacamole .so
+  # plugins make install drops under /usr/local) isn't owned by any apt
+  # package, so it still has to be copied file-by-file into the runtime stage.
+  # Besides /usr/local, guacd's FreeRDP channel plugins (guac-common-svc,
+  # guacai) are installed into FreeRDP's own plugin dir
+  # (<freerdp libdir>/freerdp2, arch-specific, outside /usr/local) and FreeRDP
+  # only finds them there, so locate and copy them too (with their path).
+  && FRDP_PLUGINS=$(find /usr -xdev -type f \( -name 'libguac-common-svc-client.so' -o -name 'libguacai-client.so' \)) \
+  && test -n "$FRDP_PLUGINS" \
+  && mkdir -p /out \
+  && cp -a --parents /usr/local/sbin/guacd /usr/local/lib $FRDP_PLUGINS /out/ \
+  # Everything ELSE guacd links against (libavcodec, libssl, libcairo, ...) IS
+  # apt-owned: instead of guessing the non-dev package names, ask dpkg which
+  # package actually provides each shared library ldd resolves, and hand that
+  # derived list to the runtime stage so it can apt-get install the real
+  # packages there (dpkg-tracked, so they keep getting patched on a rebuild,
+  # unlike raw-copied .so files).
+  && ( find /usr/local/sbin/guacd /usr/local/lib $FRDP_PLUGINS -type f \( -name '*.so*' -o -perm -u+x \) -print0 \
+  | xargs -0 -r ldd 2>/dev/null \
+  | awk '/=>/{print $3} /^[[:space:]]*\//{print $1}' \
+  | while read -r lib; do readlink -f "$lib"; done \
+  | sort -u \
+  | xargs -r dpkg -S 2>/dev/null \
+  | cut -d: -f1 \
+  | sort -u > /runtime-packages.txt ) \
+  && cat /runtime-packages.txt
+
+# ---------------------------------------------------------------------------
+# Stage: runtime — clean base + only what guacd/tomcat/postgres need,
+# regardless of which SOURCE built them
+# ---------------------------------------------------------------------------
+FROM library/tomcat:${TOMCAT_VER}-jre11-temurin-${UBUNTU_VER}
+
+ARG GUAC_VER=1.6.0
+ARG S6OVERLAY_VER
+ARG PG_VERSION=14
+
+ENV GUACAMOLE_HOME=/app/guacamole \
+  PGDATA=/config/postgres \
+  POSTGRES_USER=guacamole \
+  POSTGRES_DB=guacamole_db \
+  S6OVERLAY_VER=${S6OVERLAY_VER} \
+  GUAC_VER=${GUAC_VER} \
+  PG_MAJOR=${PG_VERSION} \
+  PATH=/usr/lib/postgresql/${PG_VERSION}/bin:$PATH
+
+# Package names ldd + dpkg -S resolved in the builder stage for everything
+# guacd links against (libavcodec, libssl, libcairo, freerdp, ...).
+COPY --from=builder /runtime-packages.txt /tmp/runtime-packages.txt
+
+# ca-certificates/curl are kept (small, and useful for TLS/troubleshooting);
+# gnupg2/lsb-release/xz-utils are build-only for this layer and purged again
+# at the end so the layer nets out clean. xmlstarlet is a genuine runtime
+# dependency (root/etc/services.d/guacamole/run uses it for the optional
+# REMOTE_IP_VALVE Tomcat config) - it's a standalone CLI tool, not something
+# guacd links against, so the ldd/dpkg-S harvest above would never catch it.
+RUN set -xe && apt-get update && apt-get install -y --no-install-recommends \
+  ca-certificates \
+  curl \
+  gnupg2 \
+  lsb-release \
+  xmlstarlet \
+  xz-utils \
+  # Add the PostgreSQL repository (needed because jammy's own repo doesn't
+  # carry every PG_MAJOR) and install the server package for it, plus guacd's
+  # own runtime library dependencies discovered in the builder stage
+  && curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg \
+  && echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | tee /etc/apt/sources.list.d/pgdg.list \
+  && apt-get update \
+  && apt-get install -y --no-install-recommends postgresql-${PG_MAJOR} $(cat /tmp/runtime-packages.txt) \
+  && rm -f /tmp/runtime-packages.txt \
+  # Apply the s6-overlay
+  && cd /tmp \
+  && curl -OfsSL https://github.com/just-containers/s6-overlay/releases/download/v${S6OVERLAY_VER}/s6-overlay-noarch.tar.xz \
+  && curl -OfsSL https://github.com/just-containers/s6-overlay/releases/download/v${S6OVERLAY_VER}/s6-overlay-x86_64.tar.xz \
+  && curl -OfsSL https://github.com/just-containers/s6-overlay/releases/download/v${S6OVERLAY_VER}/s6-overlay-aarch64.tar.xz \
+  && curl -OfsSL https://github.com/just-containers/s6-overlay/releases/download/v${S6OVERLAY_VER}/s6-overlay-armhf.tar.xz \
+  && curl -OfsSL https://github.com/just-containers/s6-overlay/releases/download/v${S6OVERLAY_VER}/s6-overlay-symlinks-noarch.tar.xz \
+  && curl -OfsSL https://github.com/just-containers/s6-overlay/releases/download/v${S6OVERLAY_VER}/syslogd-overlay-noarch.tar.xz \
+  && tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz \
+  && if [ "$(arch)" = "x86_64" ] ; then tar -C / -Jxpf /tmp/s6-overlay-x86_64.tar.xz; elif [ "$(arch)" = "armhf" ]||[ "$(arch)" = "armv7l" ] ; then tar -C / -Jxpf /tmp/s6-overlay-armhf.tar.xz; else tar -C / -Jxpf /tmp/s6-overlay-aarch64.tar.xz; fi \
+  && tar -C / -Jxpf /tmp/s6-overlay-symlinks-noarch.tar.xz \
+  && tar -C / -Jxpf /tmp/syslogd-overlay-noarch.tar.xz \
+  && rm -rf /tmp/*.tar.xz \
+  && apt-get purge -y gnupg2 lsb-release xz-utils \
+  && apt-get autoremove --purge -y \
+  && apt-get clean -y \
+  && rm -rf /var/lib/apt/lists/*
+
+# Link FreeRDP to where guac expects it to be (same fallback chain as builder)
+RUN ( ln -s /usr/local/lib/freerdp /usr/lib/arm-linux-gnueabihf/freerdp ||  \
+  ln -s /usr/local/lib/freerdp /usr/lib/arm-linux-gnueabi/freerdp   || \
+  ln -s /usr/local/lib/freerdp /usr/lib/x86_64-linux-gnu/freerdp    ||  \
+  ln -s /usr/local/lib/freerdp /usr/lib/aarch64-linux-gnu/freerdp   || \
+  ln -s /usr/local/lib/freerdp /usr/lib/ppc64el-linux-gnu/freerdp   || true )
+
+# guacd's own compiled output: the binary plus its FreeRDP/guacamole .so
+# plugins (the system libraries it links against were apt-installed above)
+COPY --from=builder /out/ /
+RUN ldconfig
+
+# guacamole-client webapp (the base image ships its own default ROOT app,
+# which has to go before the guacamole war can take its place)
+RUN rm -rf ${CATALINA_HOME}/webapps/ROOT
+COPY --from=builder ${CATALINA_HOME}/webapps/ROOT.war ${CATALINA_HOME}/webapps/ROOT.war
+
+# guacamole-client extensions, jdbc driver and postgres schema
+COPY --from=builder /app/guacamole ${GUACAMOLE_HOME}
+
+COPY ./guacamole-branding-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions
+COPY ./guacamole-branding-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions-available
+COPY ./guacamole-sso-ui-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions-available
+
+ENV GUACAMOLE_HOME=/config/guacamole
+ENV GUACD_LOG_LEVEL=info
+ENV S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0
+
+COPY root /
+
+WORKDIR /config
+
+EXPOSE 8080
+
+ENTRYPOINT [ "/init" ]
+
+HEALTHCHECK  --timeout=3s CMD wget --no-verbose --tries=1 --spider http://localhost:8080 || exit 1
