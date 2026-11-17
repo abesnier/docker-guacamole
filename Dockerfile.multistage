@@ -52,7 +52,7 @@
 
 ARG SOURCE=ubuntu
 ARG GUAC_VER=1.6.0
-ARG TOMCAT_VER=9.0.123
+ARG TOMCAT_VER=9.0.124
 ARG UBUNTU_VER=jammy
 ARG POSTGREJDBC_VER=42.7.14
 ARG S6OVERLAY_VER=3.2.3.2
@@ -193,7 +193,7 @@ RUN set -xe \
   # Parallel make under QEMU user-mode emulation (cross-arch build) is a known
   # segfault trigger, so only go wide when building natively.
   && JOBS=$(getconf _NPROCESSORS_ONLN) \
-  && if [ "$BUILDARCH" != "$TARGETARCH" ]; then JOBS=2; fi \
+  && if [ "$BUILDARCH" != "$TARGETARCH" ]; then JOBS=14; fi \
   && make -j${JOBS} \
   && make install \
   # configure only warns (and silently skips RDP) when FreeRDP isn't found

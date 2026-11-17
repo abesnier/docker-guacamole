@@ -22,6 +22,8 @@
 
 # What's new / Changelog
 
+**2026-11-16** - Updated to Tomcat 9.0.124. Due to an issue in upstream code, Github images cannot be rebuilt. All other images (including Github Noble) are updated fine.
+
 **2026-10-16** - Updated to Tomcat 9.0.123 and PostgreSQL JDBC 42.7.14
 
 **2026-09-16** - Updated to Tomcat 9.0.122
