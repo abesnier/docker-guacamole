@@ -2,6 +2,10 @@
 [![Docker Stars](https://img.shields.io/docker/stars/abesnier/guacamole.svg?logo=docker)](https://hub.docker.com/r/abesnier/guacamole/)
 [![GitHub Issues](https://img.shields.io/github/issues-raw/abesnier/docker-guacamole.svg)](https://github.com/abesnier/docker-guacamole/issues)
 
+[!CAUTION]
+Starting on the 1st week of January 2027, images using PostgreSQL 13 and 14 will not be updated anymore. v13 has been end-of-life since last year, and v14 since this month. Update to a newer image, and refer to the  [upgrade instructions](https://gitHub.com/abesnier/docker-guacamole/blob/master/UPGRADE.md).
+
+
 **If you decide to try the new images, make sure to delete the previous extensions. Go to the `config/guacamole/extensions` directory, and delete the files that contain 1.4.0 in their names (**`rm *1.4.0*.jar`**). Having multiple versions of the same extension will create issues. You can similarly clean the `extensions-available`.**
 
 **This is a fork of oznu/docker-guacamole, updated to tomcat 9.0.&ast; (guacamole is not compatible with tomcat10), postgresql 13/14/15/16/17 (see below), guacamole 1.6.0, and s6_overlay 3.2.**
