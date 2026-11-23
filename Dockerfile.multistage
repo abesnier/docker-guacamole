@@ -76,7 +76,7 @@ RUN set -xe && apt-get update && apt-get upgrade -y && apt-get upgrade -y -t ${U
   libavformat-dev \
   libavutil-dev \
   libcairo2-dev \
-  libfreerdp-client2-2 \
+  libfreerdp-client${FREERDP_REV}-${FREERDP_REV} \
   libjpeg-dev \
   libjpeg-turbo8-dev \
   libossp-uuid-dev \
@@ -147,7 +147,8 @@ ARG GUAC_VER
 # guacd is always built from the tip of main here, independent of GUAC_VER;
 # GUAC_VER only names the pre-built client artifacts below.
 RUN set -xe && mkdir -p /git /src/client \
-  && cd /git && git clone https://github.com/apache/guacamole-server.git --depth=1 -b main \
+#  && cd /git && git clone https://github.com/apache/guacamole-server.git --depth=1 -b main \
+  && cd /git && git clone --single-branch --branch fix-2349 https://github.com/abesnier/guacamole-server.git \
   && mv /git/guacamole-server /src/guacamole-server \
   && rm -rf /git \
   # This variant always targets the current 1.6.x extension set - it tracks
@@ -348,7 +349,7 @@ ENV GUACAMOLE_HOME=/config/guacamole
 ENV GUACD_LOG_LEVEL=info
 ENV S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0
 
-COPY root /
+COPY root_upgrade /
 
 WORKDIR /config
 
