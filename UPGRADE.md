@@ -1,5 +1,32 @@
 # Upgrading to a newer version of PostgreSQL
 
+## Important update
+
+Something I've been wanting to do for along time was to have an in-place update process for the database. This is now done! So the instructions below are still valid for a manual update (or backup), but are not fully required.
+
+### What changed?
+
+In the init script of the database, there is now a version check. If the database version does not match the version of PostgreSQL that is running, then the old version of postgresql will be downloaded, started, and the database is dumped, then re-imported in the newer version psql. Everything happens inside the container, and the old version is then removed.
+
+This means that the container needs internet access. If not, the upgrade process will fail, and you will have to do a manual upgrade as below.
+
+Also, the upgrade process takes a little while (download psql, check db, upgrade db, cleanup, etc...) but this needs to be done only once.
+
+```mermaid
+flowchart LR;
+    A[Container Start]-->B[DB Version Check];
+    B-->C{DB matches<br>Running PSQL?};
+    C -->|YES| H[Continue regular Init]
+    C -->|NO| E[Install the old PSQL]
+    E -->F[Start Upgrade database]
+    F -->G{Upgrade<br>Success?};
+    G -->|YES| H[Continue regular Init]
+    G -->|NO| I[Restore old database<br>Exit init]
+```
+
+See what a [successful log looks like](https://github.com/abesnier/docker-guacamole/blob/master/Examples/upgradeSuccess.txt), and what a [failed one does](https://github.com/abesnier/docker-guacamole/blob/master/Examples/upgradeFailed.txt).
+
+
 ## Why?
 
 If you inspect the Dockerfiles in this repo, you will notice that the base image I use for the `1.4.0` or `latest` tags is `tomcat:9.0.67-jre11` (at the time of writing this guide). 
