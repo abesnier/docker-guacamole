@@ -27,9 +27,9 @@
 
 # What's new / Changelog
 
-**2026-11-23** - Updated the way older versions of PSQK are handled. It is now not required to dump and restore the database. Database upgrade is now done in place. Still have  a look at the  [upgrade instructions](https://GitHub.com/abesnier/docker-guacamaloe/blob/master/UPGRADE.md) to make a backup BEFORE upgrading PGSQL!!
+**2026-11-23** - Updated the way older versions of PSQK are handled. It is now not required to dump and restore the database. Database upgrade is now done in place. Still have  a look at the  [upgrade instructions](https://GitHub.com/abesnier/docker-guacamale/blob/master/UPGRADE.md) to make a backup BEFORE upgrading PGSQL!!
 
-**2026-11-16** - Updated to Tomcat 9.0.124. Due to an issue in upstream code, Github images cannot be rebuilt. All other images (including Github Noble) are updated fine.
+**2026-11-16** - Updated to Tomcat 9.0.124. Due to an issue in upstream code, Github images cannot be rebuilt. All other images (including Github Noble) are updated fine. **Now fixed, all images up-to-date**
 
 **2026-10-16** - Updated to Tomcat 9.0.123 and PostgreSQL JDBC 42.7.14
 
