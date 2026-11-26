@@ -1,0 +1,140 @@
+/package/admin/s6-overlay/libexec/preinit: info: container permissions: uid=0 (root), euid=0, gid=0 (root), egid=0
+/package/admin/s6-overlay/libexec/preinit: info: /run permissions: uid=0 (root), gid=0 (root), perms=oxorgxgruxuwur
+/run/s6/basedir/scripts/rc.init: warning: defining user bundles in /etc/s6-overlay/s6-rc.d is deprecated, please define them in /etc/s6-overlay/user-bundles.d instead
+s6-rc: info: service s6rc-fdholder: starting
+s6-rc: info: service s6rc-oneshot-runner: starting
+s6-rc: info: service fix-attrs: starting
+s6-rc: info: service s6rc-oneshot-runner successfully started
+s6-rc: info: service s6rc-fdholder successfully started
+s6-rc: info: service legacy-cont-init: starting
+s6-rc: info: service fix-attrs successfully started
+cont-init: info: running /etc/cont-init.d/30-defaults.sh
+cp: warning: behavior of -n is non-portable and may change in future; use --update=none instead
+cont-init: info: /etc/cont-init.d/30-defaults.sh exited 0
+cont-init: info: running /etc/cont-init.d/40-postgres.sh
+[postgres-init] Database cluster is PostgreSQL 13, this image runs PostgreSQL 18.
+[postgres-init] Starting automatic upgrade. Do not stop the container until it completes.
+[postgres-init] PostgreSQL 13 server binaries are needed for the upgrade.
+[postgres-init] Installing postgresql-13 from the PGDG package repository (requires internet access)...
+[postgres-init] Starting the old PostgreSQL 13 server to check/recover the cluster...
+waiting for server to start.... done
+server started
+waiting for server to shut down.... done
+server stopped
+[postgres-init] Old cluster: encoding=UTF8 collate=en_US.UTF-8 ctype=en_US.UTF-8 checksums=0
+The files belonging to this database system will be owned by user "postgres".
+This user must also own the server process.
+
+The database cluster will be initialized with locale "en_US.UTF-8".
+The default text search configuration will be set to "english".
+
+Data page checksums are disabled.
+
+fixing permissions on existing directory /config/postgres.new ... ok
+creating subdirectories ... ok
+selecting dynamic shared memory implementation ... posix
+selecting default "max_connections" ... 100
+selecting default "shared_buffers" ... 128MB
+selecting default time zone ... Europe/Paris
+creating configuration files ... ok
+running bootstrap script ... ok
+performing post-bootstrap initialization ... ok
+syncing data to disk ... ok
+
+
+Success. You can now start the database server using:
+
+    /usr/lib/postgresql/18/bin/pg_ctl -D /config/postgres.new -l logfile start
+
+[postgres-init] Running pg_upgrade 13 -> 18 ...
+Performing Consistency Checks
+-----------------------------
+Checking cluster versions                                     ok
+Checking database connection settings                         ok
+Checking database user is the install user                    ok
+Checking for prepared transactions                            ok
+Checking for contrib/isn with bigint-passing mismatch         ok
+Checking data type usage                                      ok
+Checking for user-defined encoding conversions                ok
+Checking for user-defined postfix operators                   ok
+Checking for incompatible polymorphic functions               ok
+Checking for not-null constraint inconsistencies              ok
+Creating dump of global objects                               ok
+Creating dump of database schemas                             ok
+Checking for presence of required libraries                   ok
+Checking database user is the install user                    ok
+Checking for prepared transactions                            ok
+Checking for new cluster tablespace directories               ok
+
+If pg_upgrade fails after this point, you must re-initdb the
+new cluster before continuing.
+
+Performing Upgrade
+------------------
+Setting locale and encoding for new cluster                   ok
+Analyzing all rows in the new cluster                         ok
+Freezing all rows in the new cluster                          ok
+Deleting files from new pg_xact                               ok
+Copying old pg_xact to new server                             ok
+Setting oldest XID for new cluster                            ok
+Setting next transaction ID and epoch for new cluster         ok
+Deleting files from new pg_multixact/offsets                  ok
+Copying old pg_multixact/offsets to new server                ok
+Deleting files from new pg_multixact/members                  ok
+Copying old pg_multixact/members to new server                ok
+Setting next multixact ID and offset for new cluster          ok
+Resetting WAL archives                                        ok
+Setting the default char signedness for new cluster           ok
+Setting frozenxid and minmxid counters in new cluster         ok
+Restoring global objects in the new cluster                   ok
+Restoring database schemas in the new cluster                 ok
+Copying user relation files                                   ok
+Setting next OID for new cluster                              ok
+Sync data directory to disk                                   ok
+Creating script to delete old cluster                         ok
+Checking for extension updates                                ok
+
+Upgrade Complete
+----------------
+Some statistics are not transferred by pg_upgrade.
+Once you start the new server, consider running these two commands:
+    /usr/lib/postgresql/18/bin/vacuumdb --all --analyze-in-stages --missing-stats-only
+    /usr/lib/postgresql/18/bin/vacuumdb --all --analyze-only
+Running this script will delete the old cluster's data files:
+    ./delete_old_cluster.sh
+[postgres-init] Rebuilding indexes in the upgraded cluster...
+waiting for server to start.... done
+server started
+reindexdb: reindexing database "guacamole_db"
+reindexdb: reindexing database "postgres"
+reindexdb: reindexing database "template1"
+vacuumdb: vacuuming database "guacamole_db"
+vacuumdb: vacuuming database "postgres"
+vacuumdb: vacuuming database "template1"
+waiting for server to shut down.... done
+server stopped
+[postgres-init] Upgrade to PostgreSQL 18 completed.
+[postgres-init] Your previous PostgreSQL 13 database was kept in /config/postgres.pg13.bak
+[postgres-init] and can be deleted once you have checked that everything works.
+[postgres-init] pg_upgrade logs are in /config/pg_upgrade_logs (also safe to delete).
+Cleaning Extensions from previous Guacamole versions
+Cleaning Extensions
+Enabling selected extensions
+Starting postgres...
+Starting guacamole guacd...
+/var/run/postgresql:5432 - no response
+Waiting for postgres to come up...
+/var/run/postgresql:5432 - accepting connections
+Using default Tomcat allowed IPs regex
+Using default Tomcat proxy IP header
+Using default Tomcat proxy protocol header
+Using default Tomcat proxy forwarded by header
+Starting guacamole client...
+2026-11-26 10:06:52.107 +01:00 guacamole [app] INFO: GUACAMOLE_HOME is "/config/guacamole".
+2026-11-26 10:06:52.262 +01:00 guacamole [app] INFO: Read configuration parameters from "/config/guacamole/guacamole.properties".
+2026-11-26 10:06:52.265 +01:00 guacamole [app] INFO: Sessions will expire after 60 minutes of inactivity.
+2026-11-26 10:06:52.425 +01:00 guacamole [app] INFO: Logging will be at the "info" level.
+2026-11-26 10:06:53.715 +01:00 guacamole [app] INFO: Extension "PostgreSQL Authentication" (postgresql) loaded.
+2026-11-26 10:06:53.894 +01:00 guacamole [app] INFO: Loading JSR-356 WebSocket support...
+2026-11-26 10:06:54.042 +01:00 guacamole [app] INFO: The Apache Guacamole web application has started.
+2026-11-26 10:06:54.447 +01:00 guacamole [app] WARN: A class javax.activation.DataSource for a default provider MessageBodyWriter<javax.activation.DataSource> was not found. The provider is not available.

@@ -1,0 +1,16 @@
+# This is  sample docker-compose file. 
+# Do not forget to adapt it to your use case, especially the extensions (loading an non configured extensions will result in unexpected behaviour!)
+
+services:
+    guacamole:
+        image: abesnier/guacamole
+        restart: always
+        container_name: guacamole
+        environment:
+            - TZ=Europe/Paris
+            - EXTENSIONS=auth-totp, history-recording-storage
+            - GUACD_LOG_LEVEL=info
+        volumes:
+            - "/my/guacamole/config:/config"
+        ports:
+            - "8080:8080"

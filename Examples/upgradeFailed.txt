@@ -1,0 +1,35 @@
+/package/admin/s6-overlay/libexec/preinit: info: container permissions: uid=0 (root), euid=0, gid=0 (root), egid=0
+/package/admin/s6-overlay/libexec/preinit: info: /run permissions: uid=0 (root), gid=0 (root), perms=oxorgxgruxuwur
+/run/s6/basedir/scripts/rc.init: warning: defining user bundles in /etc/s6-overlay/s6-rc.d is deprecated, please define them in /etc/s6-overlay/user-bundles.d instead
+s6-rc: info: service s6rc-fdholder: starting
+s6-rc: info: service s6rc-oneshot-runner: starting
+s6-rc: info: service fix-attrs: starting
+s6-rc: info: service s6rc-oneshot-runner successfully started
+s6-rc: info: service s6rc-fdholder successfully started
+s6-rc: info: service legacy-cont-init: starting
+s6-rc: info: service fix-attrs successfully started
+cont-init: info: running /etc/cont-init.d/30-defaults.sh
+cont-init: info: /etc/cont-init.d/30-defaults.sh exited 0
+cont-init: info: running /etc/cont-init.d/40-postgres.sh
+[postgres-init] Database cluster is PostgreSQL 13, this image runs PostgreSQL 14.
+[postgres-init] Starting automatic upgrade. Do not stop the container until it completes.
+[postgres-init] PostgreSQL 13 server binaries are needed for the upgrade.
+[postgres-init] Installing postgresql-13 from the PGDG package repository (requires internet access)...
+[postgres-init] No package 'postgresql-13' is available for 'jammy' in the PGDG repositories (including apt-archive.postgresql.org).
+[postgres-init] ERROR: the PostgreSQL 13 server needed to upgrade your database is not available
+[postgres-init] The upgrade was aborted. Your original database in /config/postgres is still in place.
+[postgres-init] See https://github.com/abesnier/docker-guacamole/blob/master/UPGRADE.md for what to do next.
+cont-init: info: /etc/cont-init.d/40-postgres.sh exited 1
+cont-init: info: running /etc/cont-init.d/50-extensions.sh
+Cleaning Extensions from previous Guacamole versions
+Cleaning Extensions
+Enabling selected extensions
+cont-init: info: /etc/cont-init.d/50-extensions.sh exited 0
+cont-init: warning: some scripts exited nonzero
+s6-rc: warning: unable to start service legacy-cont-init: command exited 1
+/run/s6/basedir/scripts/rc.init: warning: s6-rc failed to properly bring all the services up! Check your logs (in /run/uncaught-logs/current if you have in-container logging) for more information.
+/run/s6/basedir/scripts/rc.init: fatal: stopping the container.
+s6-rc: info: service fix-attrs: stopping
+s6-rc: info: service s6rc-fdholder is marked as essential, not stopping it
+s6-rc: info: service s6rc-oneshot-runner is marked as essential, not stopping it
+s6-rc: info: service fix-attrs successfully stopped
