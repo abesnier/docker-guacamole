@@ -348,6 +348,7 @@ COPY ./guacamole-sso-ui-${GUAC_VER}.jar ${GUACAMOLE_HOME}/extensions-available
 ENV GUACAMOLE_HOME=/config/guacamole
 ENV GUACD_LOG_LEVEL=info
 ENV S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0
+ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
 
 COPY root_upgrade /
 
