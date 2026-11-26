@@ -3,14 +3,12 @@
 [![GitHub Issues](https://img.shields.io/github/issues-raw/abesnier/docker-guacamole.svg)](https://github.com/abesnier/docker-guacamole/issues)
 
 > [!CAUTION]
-> Starting on the 1st week of January 2027, images using PostgreSQL 13 and 14 will not be updated anymore. v13 has been end-of-life since last year, and v14 since this month. Update to a newer image, and refer to the  [upgrade instructions](https://gitHub.com/abesnier/docker-guacamole/blob/master/UPGRADE.md).
-
-
-**If you decide to try the new images, make sure to delete the previous extensions. Go to the `config/guacamole/extensions` directory, and delete the files that contain 1.4.0 in their names (**`rm *1.4.0*.jar`**). Having multiple versions of the same extension will create issues. You can similarly clean the `extensions-available`.**
-
-**This is a fork of oznu/docker-guacamole, updated to tomcat 9.0.&ast; (guacamole is not compatible with tomcat10), postgresql 13/14/15/16/17 (see below), guacamole 1.6.0, and s6_overlay 3.2.**
-
-**If you are looking to upgrade from Oznu's image, or from an image that uses a version of PostgreSQL lower than 13, please have a look at the  [upgrade instructions](https://GitHub.com/abesnier/docker-guacamole/blob/master/UPGRADE.md). It is written for my images, but can be adapted for any image.**
+> Starting on the 1st week of January 2027, images using PostgreSQL 13 and 14 will not be updated anymore. v13 has been end-of-life since last year, and v14 since this month.
+> Images now include an in-place database upgrade. If the container detects that the database on disk is from an earlier version of PSQL, an update process will be launched. This will make the first strat-up quite long, but needs to be done only once. This has been tested for all combinations between PSQL 13 and 18, so I'm pretty confident in it.
+> Still, make a backup of your db before upgrading.
+> Refer to the [upgrade instructions](https://gitHu
+> 
+**This is a fork of oznu/docker-guacamole, updated to tomcat 9.0.&ast; (guacamole is not compatible with tomcat10), postgresql 13/14/15/16/17/18 (see below), guacamole 1.6.*, and s6_overlay 3.2.**
 
 **Every month, inactive images on Docker Hub will be removed. If you use one of those, you'll need to update to a newer image.**  If you need to keep a specific image, please raise an [Issue](https://GitHub.com/abesnier/docker-guacamole/issues), so I can track it.
 
