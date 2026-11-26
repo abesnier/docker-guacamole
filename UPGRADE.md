@@ -26,6 +26,12 @@ flowchart LR;
 
 See what a [successful log looks like](https://github.com/abesnier/docker-guacamole/blob/master/Examples/upgradeSuccess.txt), and what a [failed one does](https://github.com/abesnier/docker-guacamole/blob/master/Examples/upgradeFailed.txt).
 
+>[!IMPORTANT]
+>
+>If you use a restart policy (for example, `restart: always` in a docker-compose file), the startup process will fail endlessly.
+>
+>To prevent this, use `restart: no`  or `restart: on-failure:3` 
+
 
 ## Why?
 
